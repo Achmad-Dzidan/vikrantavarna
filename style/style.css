@@ -1,0 +1,306 @@
+/* --- General Styling --- */
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+        body {
+            background-color: #121212; /* Latar belakang gelap */
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 40px 20px;
+            box-sizing: border-box;
+        }
+
+        /* --- Wrapper Utama untuk efek tumpukan --- */
+        .main-wrapper {
+            position: relative;
+            max-width: 400px;
+            width: 100%;
+        }
+        
+        /* --- (BARU) Container Latar Belakang --- */
+        .card-backdrop {
+            position: absolute;
+            background-color: #3a3b3c; /* Warna latar belakang yang sedikit lebih gelap */
+            border-radius: 20px; /* Radius sedikit lebih besar dari kartu utama */
+            z-index: 0; /* Pastikan berada di belakang */
+            /* Mengatur agar sedikit lebih besar dari konten di depannya */
+            top: -15px;
+            left: -15px;
+            right: -15px;
+            bottom: -15px;
+            /* transform: rotate(-1.5deg); */
+        }
+        
+        /* --- (BARU) Penampung untuk semua kartu konten --- */
+        .content-stack {
+            position: relative;
+            z-index: 1; /* Pastikan berada di depan backdrop */
+            display: flex;
+            flex-direction: column;
+            gap: 16px; /* Jarak antara kartu linimasa dan kartu pemimpin */
+        }
+
+        /* --- (MODIFIKASI) Kelas .card untuk styling bersama --- */
+        .card {
+            background-color: #f0f2f5;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .card h2 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1c1e21;
+            margin-top: 0;
+            margin-bottom: 8px;
+        }
+
+        .card p {
+            font-size: 0.875rem;
+            color: #65676b;
+            margin-top: 0;
+            margin-bottom: 24px;
+        }
+
+        /* --- Timeline List Styling (Tidak berubah) --- */
+        .timeline {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            position: relative;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 5px;
+            bottom: 5px;
+            left: 5px;
+            width: 2px;
+            background-color: #dcdfe3;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 30px;
+            margin-bottom: 20px;
+        }
+        
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #007bff;
+            border: 2px solid #f0f2f5;
+        }
+        
+        .timeline-item .item-title {
+            font-weight: 500;
+            color: #1c1e21;
+            margin: 0 0 4px 0;
+        }
+
+        .timeline-item .item-desc {
+            font-size: 0.875rem;
+            color: #65676b;
+            margin: 0;
+        }
+
+        .timeline-item .item-date {
+            font-size: 0.75rem;
+            color: #90949c;
+            margin-bottom: 6px;
+        }
+
+        /* --- (BARU) Leader Container Content Styling --- */
+        .leader-container p {
+            margin-bottom: 8px;
+        }
+
+        .headd-container {
+            background-color: #007bff;
+        }
+        
+        .headd-container p {
+            margin-bottom: 8px;
+            font-size: 28px;
+            text-align: center;
+            font-weight: bold;
+            color: #fff;
+        }
+        
+        .headd-container p .headd {
+            margin-bottom: 8px;
+            font-size: 15px;
+            font-weight: normal;
+        }
+
+        .leader-container .leader-name {
+            font-weight: 500;
+            color: #1c1e21;
+        }
+        
+                /* --- (BARU) Styling untuk Kartu Overview & Chart --- */
+        .overview-container p {
+            margin-bottom: 24px;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            max-width: 300px; /* Batasi lebar maks chart */
+            margin: 0 auto;   /* Posisikan di tengah kartu */
+            height: 300px;    /* Beri ketinggian agar tidak gepeng saat loading */
+        }
+
+        /* --- (BARU) Styling untuk Kartu Progress Bar --- */
+.progress-container {
+    /* Bisa ditambahkan style khusus jika perlu */
+}
+
+.progress-section {
+    margin-top: 24px; /* Jarak dari paragraf di atasnya */
+}
+
+.progress-label {
+    display: block;
+    font-size: 0.8rem; /* 13px */
+    font-weight: 500;
+    color: #65676b;
+    margin-bottom: 8px;
+}
+
+.progress-bar-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px; /* Jarak antara bar dan teks persen */
+}
+
+.progress-bar-background {
+    flex-grow: 1; /* Membuat bar memenuhi sisa ruang */
+    height: 10px;
+    background-color: #e0e0e0; /* Warna latar bar */
+    border-radius: 5px;
+    overflow: hidden; /* Memastikan isian bar tetap di dalam */
+}
+
+.progress-bar-fill {
+    height: 100%;
+    width: 0%; /* Awalnya 0%, akan diubah oleh JavaScript */
+    background-color: #007bff; /* Warna biru primer yang konsisten */
+    border-radius: 5px;
+    transition: width 0.5s ease-in-out; /* Animasi saat progress berubah */
+}
+
+.progress-percentage {
+    font-size: 0.9rem; /* 14px */
+    font-weight: 500;
+    color: #1c1e21;
+    min-width: 35px; /* Agar layout tidak bergeser saat persen berubah */
+    text-align: right;
+}
+
+/* --- (BARU) Styling untuk Kartu Progress Tugas --- */
+
+/* Navigasi Tab */
+.tabs-nav {
+    display: flex;
+    border-bottom: 1px solid #dcdfe3;
+    margin-top: 24px;
+    margin-bottom: 16px;
+}
+
+.tab-link {
+    border: none;
+    background-color: transparent;
+    padding: 10px 16px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #65676b;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -1px; /* Agar border bawah sejajar dengan border container */
+}
+
+/* Style untuk tab yang aktif */
+.tab-link.active {
+    color: #007bff;
+    border-bottom-color: #007bff;
+}
+
+/* Konten Tab */
+.tab-pane {
+    display: none; /* Sembunyikan semua konten tab secara default */
+}
+.tab-pane.active {
+    display: block; /* Tampilkan hanya konten tab yang aktif */
+}
+
+/* Kartu Bersarang (Nested Card) */
+.nested-card {
+    background-color: #ffffff; /* Warna sedikit beda dari parent card */
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 16px;
+}
+
+.nested-card h3 {
+    margin-top: 0;
+    margin-bottom: 16px;
+    font-size: 1.1rem;
+    color: #1c1e21;
+}
+
+/* Daftar Tugas dengan Checkbox */
+.task-list {
+    margin-top: 16px;
+}
+.week-label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #1c1e21;
+    margin: 0 0 10px 0;
+}
+
+.checkbox-item {
+    display: flex;
+    align-items: center;
+    padding: 8px 0;
+}
+
+.task-checkbox {
+    width: 18px;
+    height: 18px;
+    margin-right: 12px;
+    cursor: pointer;
+}
+
+.checkbox-item label {
+    font-size: 0.9rem;
+    color: #333;
+    cursor: pointer;
+}
+
+/* --- Cari aturan ini di file CSS Anda dan ganti dengan yang di bawah --- */
+
+.task-checkbox {
+    /* Atur ukuran yang seragam di sini */
+    width: 20px;
+    height: 20px;
+
+    /* Properti lain untuk menjaga konsistensi */
+    margin-right: 12px;
+    cursor: pointer;
+    flex-shrink: 0; /* Mencegah checkbox menyusut jika teksnya panjang */
+}
