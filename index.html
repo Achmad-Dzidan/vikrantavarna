@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Linimasa & Tim Proyek</title>
+    <link rel="icon" type="image/x-icon" href="/src/logo.jpg">
     <!-- Pastikan path ke file CSS Anda benar -->
     <link rel="stylesheet" href="style/style.css">
 </head>
@@ -23,23 +24,12 @@
             <!-- Kartu Linimasa Proyek -->
             <div class="card timeline-container">
                 <h2>Linimasa Proyek Terperinci</h2>
-                <ul class="timeline">
-                    <li class="timeline-item">
-                        <div class="item-date">28 Mei 2025</div>
-                        <h3 class="item-title">Onboarding</h3>
-                        <p class="item-desc">Perkenalan setiap anggota dan pembagian divisi</p>
-                    </li>
-                    <li class="timeline-item">
-                        <div class="item-date">10 Juni 2025</div>
-                        <h3 class="item-title">Perencanaan Proker</h3>
-                        <p class="item-desc">Pembaruan jumlah proker menjadi 16 proker<br>(Cek selengkapnya di dashboard)</p>
-                    </li>
-                    <li class="timeline-item">
-                        <div class="item-date">17 Juni 2025</div>
-                        <h3 class="item-title">Rapat Berikutnya </h3>
-                        <p class="item-desc">...</p>
-                    </li>
+                <ul class="timeline" id="timelineList">
+                    <!-- Konten diisi secara dinamis dari Firebase -->
                 </ul>
+                 <div class="timeline-item-actions">
+                    <button class="btn-add" onclick="openAddModal()">Tambah</button>
+                </div>
             </div>
 
             <!-- Kartu Gambaran Umum Proyek (Chart) -->
@@ -347,18 +337,26 @@
         </div>
     </div>
 
+    <div id="timelineModal" class="modal">
+        <div class="modal-content">
+            <h3 id="modalTitle">Tambah Item Linimasa</h3>
+            <input type="text" id="modalId" hidden>
+            <input type="date" id="modalDate" required>
+            <input type="text" id="modalTitleInput" placeholder="Judul" required>
+            <textarea id="modalDesc" placeholder="Deskripsi" required></textarea>
+            <button class="btn-save" onclick="saveTimelineItem()">Simpan</button>
+            <button class="btn-cancel" onclick="closeModal()">Batal</button>
+        </div>
+    </div>
+
     <!-- HANYA SATU SCRIPT TAG UNTUK CHART.JS -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <!-- HANYA SATU BLOK SCRIPT UNTUK SEMUA LOGIKA APLIKASI -->
     <script type="module">
-        // Impor fungsi-fungsi yang diperlukan dari Firebase SDK
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
-        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js";
+        import { getFirestore, doc, setDoc, onSnapshot, collection, addDoc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js";
 
-        // ========================================================================
-        // --- (PENTING) GANTI DENGAN KODE KONFIGURASI DARI PROYEK FIREBASE ANDA ---
-        // ========================================================================
         const firebaseConfig = {
             apiKey: "AIzaSyCJcvMENgl2jqjgQ659R4WJl_NR_vam1z0",
             authDomain: "timeline-vikrantavarna.firebaseapp.com",
@@ -368,17 +366,15 @@
             appId: "1:988549802115:web:d12bfe84697c269db553b6",
             measurementId: "G-BMEG2N04N5"
         };
-        // ========================================================================
 
-        // Inisialisasi Firebase dan dapatkan akses ke layanan Firestore
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         const progressDocRef = doc(db, "progress", "mainState");
+        const timelineCollectionRef = collection(db, "timeline");
 
-        // --- Inisialisasi Doughnut Chart ---
         const ctx = document.getElementById('myDoughnutChart');
         if (ctx) {
-             const chartData = {
+            const chartData = {
                 labels: ['Ketua','Sekertaris','Bendahara','Acara','Humas','PDD'],
                 datasets: [{
                     label: 'Jumlah Tugas',
@@ -393,9 +389,7 @@
             new Chart(ctx, chartConfig);
         }
 
-        // --- SEMUA LOGIKA UTAMA ADA DI DALAM SATU EVENT LISTENER INI ---
         document.addEventListener('DOMContentLoaded', () => {
-
             function updateProgressUI(percentage, barFillElement, percentageTextElement) {
                 if (!barFillElement || !percentageTextElement) return;
                 const validPercentage = Math.max(0, Math.min(100, percentage));
@@ -408,7 +402,6 @@
                 const checkboxes = parentElement.querySelectorAll('.task-checkbox');
                 const checkedCount = parentElement.querySelectorAll('.task-checkbox:checked').length;
                 const percentage = checkboxes.length > 0 ? (checkedCount / checkboxes.length) * 100 : 0;
-                
                 const barFill = parentElement.querySelector('.progress-bar-fill');
                 const percentageText = parentElement.querySelector('.progress-percentage');
                 updateProgressUI(percentage, barFill, percentageText);
@@ -418,7 +411,6 @@
                 const allTasks = document.querySelectorAll('.task-progress-card .task-checkbox');
                 const checkedTasks = document.querySelectorAll('.task-progress-card .task-checkbox:checked');
                 const totalPercentage = allTasks.length > 0 ? (checkedTasks.length / allTasks.length) * 100 : 0;
-                
                 const totalBarFill = document.getElementById('progressBarFill');
                 const totalPercentageText = document.getElementById('progressPercentage');
                 updateProgressUI(totalPercentage, totalBarFill, totalPercentageText);
@@ -445,7 +437,6 @@
                                 checkbox.checked = serverStates[checkbox.id];
                             }
                         });
-
                         document.querySelectorAll('.nested-card[id]').forEach(container => {
                             updateTaskProgress(container);
                         });
@@ -453,6 +444,115 @@
                     }
                 });
             }
+
+        function renderTimelineItem(item) {
+            const li = document.createElement('li');
+            li.className = 'timeline-item';
+            li.setAttribute('data-id', item.id);
+
+            // Fungsi untuk memformat tanggal
+            function formatDate(dateString) {
+                const date = new Date(dateString);
+                const day = date.getDate();
+                const monthNames = [
+                    'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+                    'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+                ];
+                const month = monthNames[date.getMonth()];
+                const year = date.getFullYear();
+                return `${day} ${month} ${year}`;
+            }
+
+            li.innerHTML = `
+                <div class="item-date">${formatDate(item.date)}</div>
+                <h3 class="item-title">${item.title}</h3>
+                <p class="item-desc">${item.description.replace(/\n/g, '<br>')}</p>
+            `;
+            return li;
+        }
+
+        function loadTimelineItems() {
+            onSnapshot(timelineCollectionRef, (snapshot) => {
+                const timelineList = document.getElementById('timelineList');
+                timelineList.innerHTML = '';
+
+                // Kumpulkan semua item dari snapshot
+                const items = [];
+                snapshot.forEach(doc => {
+                    items.push({ id: doc.id, ...doc.data() });
+                });
+
+                // Urutkan item berdasarkan tanggal (terlama ke terbaru)
+                items.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+                // Render item yang sudah diurutkan
+                items.forEach(item => {
+                    timelineList.appendChild(renderTimelineItem(item));
+                });
+            });
+        }
+
+            window.openAddModal = function() {
+                document.getElementById('modalTitle').textContent = 'Tambah Item Linimasa';
+                document.getElementById('modalId').value = '';
+                document.getElementById('modalDate').value = '';
+                document.getElementById('modalTitleInput').value = '';
+                document.getElementById('modalDesc').value = '';
+                document.getElementById('timelineModal').style.display = 'flex';
+            };
+
+            window.editTimelineItem = function(id) {
+                const itemRef = doc(timelineCollectionRef, id);
+                onSnapshot(itemRef, (doc) => {
+                    if (doc.exists()) {
+                        const item = doc.data();
+                        document.getElementById('modalTitle').textContent = 'Edit Item Linimasa';
+                        document.getElementById('modalId').value = id;
+                        document.getElementById('modalDate').value = item.date;
+                        document.getElementById('modalTitleInput').value = item.title;
+                        document.getElementById('modalDesc').value = item.description;
+                        document.getElementById('timelineModal').style.display = 'flex';
+                    }
+                });
+            };
+
+            window.saveTimelineItem = async function() {
+                const id = document.getElementById('modalId').value;
+                const date = document.getElementById('modalDate').value;
+                const title = document.getElementById('modalTitleInput').value;
+                const desc = document.getElementById('modalDesc').value;
+                if (!date || !title || !desc) {
+                    alert('Semua field harus diisi!');
+                    return;
+                }
+                try {
+                    const data = { date, title, description: desc };
+                    if (id) {
+                        await updateDoc(doc(timelineCollectionRef, id), data);
+                    } else {
+                        await addDoc(timelineCollectionRef, data);
+                    }
+                    closeModal();
+                } catch (e) {
+                    console.error("Error saving timeline item: ", e);
+                    alert('Gagal menyimpan item linimasa.');
+                }
+            };
+
+            window.deleteTimelineItem = async function(id) {
+                if (confirm('Apakah Anda yakin ingin menghapus item ini?')) {
+                    try {
+                        await deleteDoc(doc(timelineCollectionRef, id));
+                    } catch (e) {
+                        console.error("Error deleting timeline item: ", e);
+                        alert('Gagal menghapus item linimasa.');
+                    }
+                }
+            };
+
+            window.closeModal = function() {
+                document.getElementById('timelineModal').style.display = 'none';
+            };
 
             document.querySelectorAll('.tab-link').forEach(link => {
                 link.addEventListener('click', () => {
@@ -466,7 +566,6 @@
 
             document.querySelectorAll('.task-checkbox').forEach(checkbox => {
                 checkbox.addEventListener('change', () => {
-                    // Saat diubah, perbarui UI lokal & simpan ke Firebase
                     const parentId = checkbox.getAttribute('data-parent-id');
                     const parentElement = document.getElementById(parentId);
                     updateTaskProgress(parentElement);
@@ -475,9 +574,8 @@
                 });
             });
 
-            // Mulai mendengarkan perubahan dari Firebase.
-            // Ini akan melakukan pemuatan data awal dan menangani pembaruan real-time.
             listenToProgressChanges();
+            loadTimelineItems();
         });
     </script>
 </body>
