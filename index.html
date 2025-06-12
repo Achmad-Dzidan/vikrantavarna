@@ -225,101 +225,106 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <!-- HANYA SATU BLOK SCRIPT UNTUK SEMUA LOGIKA APLIKASI -->
-    <script>
-        // Inisialisasi Chart.js
+    <script type="module">
+        // Impor fungsi-fungsi yang diperlukan dari Firebase SDK
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
+        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js";
+
+        // ========================================================================
+        // --- (PENTING) GANTI DENGAN KODE KONFIGURASI DARI PROYEK FIREBASE ANDA ---
+        // ========================================================================
+        const firebaseConfig = {
+            apiKey: "GANTI_DENGAN_API_KEY_ANDA",
+            authDomain: "GANTI_DENGAN_AUTH_DOMAIN_ANDA",
+            projectId: "GANTI_DENGAN_PROJECT_ID_ANDA",
+            storageBucket: "GANTI_DENGAN_STORAGE_BUCKET_ANDA",
+            messagingSenderId: "GANTI_DENGAN_SENDER_ID_ANDA",
+            appId: "GANTI_DENGAN_APP_ID_ANDA"
+        };
+        // ========================================================================
+
+        // Inisialisasi Firebase dan dapatkan akses ke layanan Firestore
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const progressDocRef = doc(db, "progress", "mainState");
+
+        // --- Inisialisasi Doughnut Chart ---
         const ctx = document.getElementById('myDoughnutChart');
-        const chartData = {
-            labels: ['Ketua','Sekertaris','Bendahara','Acara','Logistik','Humas','Konsumsi','PDD'],
-            datasets: [{
-                label: 'Jumlah Tugas',
-                data: [12, 7, 9, 4, 4, 4, 4, 7], // data dari gambar
-                backgroundColor: ['#3498db','#9b59b6','#e67e22','#e74c3c','#f1c40f','#1abc9c','#2ecc71','#7f8c8d'],
-                borderColor: '#f0f2f5',
-                borderWidth: 4,
-                hoverOffset: 8
-            }]
-        };
-        const chartConfig = {
-            type: 'doughnut',
-            data: chartData,
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                cutout: '60%',
-                plugins: {
-                    legend: {
-                        position: 'bottom',
-                        labels: { padding: 20, boxWidth: 12, font: { family: "'Roboto', sans-serif" }}
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                let label = context.label || '';
-                                if (label) { label += ': '; }
-                                if (context.parsed !== null) { label += context.parsed + ' Tugas'; }
-                                return label;
-                            }
-                        }
-                    }
-                }
-            }
-        };
-        new Chart(ctx, chartConfig);
+        if (ctx) {
+             const chartData = {
+                labels: ['Ketua','Sekertaris','Bendahara','Acara','Humas','PDD'],
+                datasets: [{
+                    label: 'Jumlah Tugas',
+                    data: [2, 7, 5, 6, 5, 9],
+                    backgroundColor: ['#3498db','#9b59b6','#e67e22','#e74c3c','#1abc9c','#7f8c8d'],
+                    borderColor: '#f0f2f5',
+                    borderWidth: 4,
+                    hoverOffset: 8
+                }]
+            };
+            const chartConfig = { type: 'doughnut', data: chartData, options: { responsive: true, maintainAspectRatio: false, cutout: '60%', plugins: { legend: { position: 'bottom', labels: { padding: 20, boxWidth: 12, font: { family: "'Roboto', sans-serif" }}}, tooltip: { callbacks: { label: function(context) { let label = context.label || ''; if (label) { label += ': '; } if (context.parsed !== null) { label += context.parsed + ' Tugas'; } return label; } } } } } };
+            new Chart(ctx, chartConfig);
+        }
 
-
-        // SEMUA LOGIKA UTAMA ADA DI DALAM SATU EVENT LISTENER INI
+        // --- SEMUA LOGIKA UTAMA ADA DI DALAM SATU EVENT LISTENER INI ---
         document.addEventListener('DOMContentLoaded', () => {
 
-            function updateProgress(percentage) {
+            function updateProgressUI(percentage, barFillElement, percentageTextElement) {
+                if (!barFillElement || !percentageTextElement) return;
                 const validPercentage = Math.max(0, Math.min(100, percentage));
-                const progressBarFill = document.getElementById('progressBarFill');
-                const progressPercentageText = document.getElementById('progressPercentage');
-                if (progressBarFill && progressPercentageText) {
-                    progressBarFill.style.width = validPercentage + '%';
-                    progressPercentageText.textContent = Math.round(validPercentage) + '%';
-                }
+                barFillElement.style.width = validPercentage + '%';
+                percentageTextElement.textContent = Math.round(validPercentage) + '%';
+            }
+
+            function updateTaskProgress(parentElement) {
+                if (!parentElement) return;
+                const checkboxes = parentElement.querySelectorAll('.task-checkbox');
+                const checkedCount = parentElement.querySelectorAll('.task-checkbox:checked').length;
+                const percentage = checkboxes.length > 0 ? (checkedCount / checkboxes.length) * 100 : 0;
+                
+                const barFill = parentElement.querySelector('.progress-bar-fill');
+                const percentageText = parentElement.querySelector('.progress-percentage');
+                updateProgressUI(percentage, barFill, percentageText);
             }
 
             function updateTotalProgress() {
                 const allTasks = document.querySelectorAll('.task-progress-card .task-checkbox');
                 const checkedTasks = document.querySelectorAll('.task-progress-card .task-checkbox:checked');
                 const totalPercentage = allTasks.length > 0 ? (checkedTasks.length / allTasks.length) * 100 : 0;
-                updateProgress(totalPercentage);
+                
+                const totalBarFill = document.getElementById('progressBarFill');
+                const totalPercentageText = document.getElementById('progressPercentage');
+                updateProgressUI(totalPercentage, totalBarFill, totalPercentageText);
             }
 
-            function updateTaskProgress(parentId) {
-                const parentElement = document.getElementById(parentId);
-                if (!parentElement) return;
-                const checkboxesInGroup = parentElement.querySelectorAll('.task-checkbox');
-                const checkedCount = parentElement.querySelectorAll('.task-checkbox:checked').length;
-                const totalTasks = checkboxesInGroup.length;
-                const percentage = totalTasks > 0 ? (checkedCount / totalTasks) * 100 : 0;
-                const progressBarFill = parentElement.querySelector('.progress-bar-fill');
-                const percentageText = parentElement.querySelector('.progress-percentage');
-                if(progressBarFill && percentageText) {
-                    progressBarFill.style.width = percentage + '%';
-                    percentageText.textContent = Math.round(percentage) + '%';
-                }
-            }
-            
-            function saveCheckboxStates() {
+            async function saveStatesToFirebase() {
                 const states = {};
                 document.querySelectorAll('.task-checkbox').forEach(checkbox => {
                     states[checkbox.id] = checkbox.checked;
                 });
-                localStorage.setItem('savedCheckboxStates', JSON.stringify(states));
+                try {
+                    await setDoc(progressDocRef, states, { merge: true });
+                } catch (e) {
+                    console.error("Error saving progress to Firebase: ", e);
+                }
             }
 
-            function loadCheckboxStates() {
-                const savedStates = JSON.parse(localStorage.getItem('savedCheckboxStates'));
-                if (savedStates) {
-                    Object.keys(savedStates).forEach(checkboxId => {
-                        const checkbox = document.getElementById(checkboxId);
-                        if (checkbox) {
-                            checkbox.checked = savedStates[checkboxId];
-                        }
-                    });
-                }
+            function listenToProgressChanges() {
+                onSnapshot(progressDocRef, (doc) => {
+                    const serverStates = doc.data();
+                    if (serverStates) {
+                        document.querySelectorAll('.task-checkbox').forEach(checkbox => {
+                            if (serverStates[checkbox.id] !== undefined) {
+                                checkbox.checked = serverStates[checkbox.id];
+                            }
+                        });
+
+                        document.querySelectorAll('.nested-card[id]').forEach(container => {
+                            updateTaskProgress(container);
+                        });
+                        updateTotalProgress();
+                    }
+                });
             }
 
             document.querySelectorAll('.tab-link').forEach(link => {
@@ -334,20 +339,18 @@
 
             document.querySelectorAll('.task-checkbox').forEach(checkbox => {
                 checkbox.addEventListener('change', () => {
+                    // Saat diubah, perbarui UI lokal & simpan ke Firebase
                     const parentId = checkbox.getAttribute('data-parent-id');
-                    updateTaskProgress(parentId);
+                    const parentElement = document.getElementById(parentId);
+                    updateTaskProgress(parentElement);
                     updateTotalProgress();
-                    saveCheckboxStates();
+                    saveStatesToFirebase();
                 });
             });
 
-            loadCheckboxStates();
-
-            document.querySelectorAll('.nested-card[id]').forEach(container => {
-                updateTaskProgress(container.id);
-            });
-
-            updateTotalProgress();
+            // Mulai mendengarkan perubahan dari Firebase.
+            // Ini akan melakukan pemuatan data awal dan menangani pembaruan real-time.
+            listenToProgressChanges();
         });
     </script>
 </body>
