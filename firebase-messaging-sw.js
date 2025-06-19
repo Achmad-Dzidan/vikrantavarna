@@ -13,12 +13,12 @@ const firebaseConfig = {
     measurementId: "G-BMEG2N04N5"
 };
 
-// Inisialisasi Firebase
-const app = initializeApp(firebaseConfig);
-const messaging = getMessaging(app);
+// (MODIFIKASI) Inisialisasi Firebase menggunakan namespace 'firebase'
+const app = firebase.initializeApp(firebaseConfig);
+const messaging = firebase.messaging(app); // Gunakan firebase.messaging()
 
-// Menangani notifikasi saat aplikasi berada di latar belakang
-firebase.messaging().onBackgroundMessage((payload) => {
+// (MODIFIKASI) Menangani notifikasi saat aplikasi berada di latar belakang
+messaging.onBackgroundMessage((payload) => {
     console.log('[firebase-messaging-sw.js] Received background message ', payload);
 
     const notificationTitle = payload.notification.title;
@@ -29,4 +29,3 @@ firebase.messaging().onBackgroundMessage((payload) => {
 
     return self.registration.showNotification(notificationTitle, notificationOptions);
 });
-
