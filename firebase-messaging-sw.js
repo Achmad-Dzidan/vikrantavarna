@@ -18,8 +18,8 @@ const app = initializeApp(firebaseConfig);
 const messaging = getMessaging(app);
 
 // Menangani notifikasi saat aplikasi berada di latar belakang
-onBackgroundMessage(messaging, (payload) => {
-    console.log('Pesan diterima di latar belakang: ', payload);
+firebase.messaging().onBackgroundMessage((payload) => {
+    console.log('[firebase-messaging-sw.js] Received background message ', payload);
 
     const notificationTitle = payload.notification.title;
     const notificationOptions = {
@@ -27,5 +27,6 @@ onBackgroundMessage(messaging, (payload) => {
         icon: '/vikrantavarna/src/logo.jpg' // Pastikan path ke logo benar
     };
 
-    self.registration.showNotification(notificationTitle, notificationOptions);
+    return self.registration.showNotification(notificationTitle, notificationOptions);
 });
+
