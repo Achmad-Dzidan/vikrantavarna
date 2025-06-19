@@ -1,6 +1,6 @@
 // Impor skrip Firebase
-self.importScripts("https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js");
-self.importScripts("https://www.gstatic.com/firebasejs/9.15.0/firebase-messaging.js");
+self.importScripts('firebase-libs/firebase-app.js');
+self.importScripts('firebase-libs/firebase-messaging.js');
 
 // Konfigurasi Firebase Anda (SAMA DENGAN DI INDEX.HTML)
 const firebaseConfig = {
