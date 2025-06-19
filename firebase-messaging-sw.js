@@ -1,6 +1,6 @@
 // Impor skrip Firebase
-importScripts("https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js");
-importScripts("https://www.gstatic.com/firebasejs/9.15.0/firebase-messaging.js");
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
+import { getMessaging, onBackgroundMessage } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-messaging.js";
 
 // Konfigurasi Firebase Anda (SAMA DENGAN DI INDEX.HTML)
 const firebaseConfig = {
@@ -14,16 +14,18 @@ const firebaseConfig = {
 };
 
 // Inisialisasi Firebase
-const app = firebase.initializeApp(firebaseConfig);
-const messaging = firebase.getMessaging(app);
+const app = initializeApp(firebaseConfig);
+const messaging = getMessaging(app);
 
-// (Opsional) Menangani notifikasi di latar belakang
-messaging.onBackgroundMessage((payload) => {
-    console.log('Received background message ', payload);
+// Menangani notifikasi saat aplikasi berada di latar belakang
+onBackgroundMessage(messaging, (payload) => {
+    console.log('Pesan diterima di latar belakang: ', payload);
+
     const notificationTitle = payload.notification.title;
     const notificationOptions = {
         body: payload.notification.body,
-        icon: '/src/logo.jpg' // Ganti dengan path logo Anda
+        icon: '/vikrantavarna/src/logo.jpg' // Pastikan path ke logo benar
     };
+
     self.registration.showNotification(notificationTitle, notificationOptions);
 });
