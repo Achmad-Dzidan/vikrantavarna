@@ -251,51 +251,53 @@
 
         const enableNotificationsBtn = document.getElementById('enableNotificationsBtn');
         // Fungsi untuk meminta izin notifikasi dan menyimpan token
-            const requestNotificationPermission = async () => {
-                try {
-                    const permission = await Notification.requestPermission();
-                    if (permission === 'granted') {
-                        showToast('Izin notifikasi diberikan!');
-                        
-                        // (MODIFIKASI PENTING) Hapus `{ type: 'module' }` karena SW bukan lagi modul
-                        const swRegistration = await navigator.serviceWorker.register('/vikrantavarna/firebase-messaging-sw.js', { 
-                            scope: '/vikrantavarna/'
-                        });
+        const requestNotificationPermission = async () => {
+            try {
+                const permission = await Notification.requestPermission();
+                if (permission === 'granted') {
+                    showToast('Izin notifikasi diberikan!');
+                    
+                    // Daftarkan service worker
+                    const swRegistration = await navigator.serviceWorker.register('/vikrantavarna/firebase-messaging-sw.js', { 
+                        scope: '/vikrantavarna/'
+                    });
 
-                        // (PENTING) Anda harus mengisi VAPID key ini dari Firebase Console Anda
-                        const vapidKey = "BDYd6eR9qYRSs2idB3YnbfdenhvshnHZXYVzwomh89Z0HBitreMOdH3DIC64ORyZTdACEtqKYOwJUaQ_-oN4fZA";
-                        
-                        if (vapidKey.startsWith("GANTI_DENGAN")) {
-                            showToast('Error: VAPID key belum diisi di dalam kode.', 'error');
-                            return;
-                        }
+                    // (BARU) Tunggu sampai service worker benar-benar aktif
+                    await navigator.serviceWorker.ready;
 
-                        // Berikan registrasi manual ke getToken
-                        const currentToken = await getToken(messaging, { 
-                            vapidKey: vapidKey,
-                            serviceWorkerRegistration: swRegistration
-                        });
-                        
-                        if (currentToken) {
-                            console.log('FCM Token:', currentToken);
-                            // Simpan token ini ke Firestore
-                            const tokensRef = collection(db, 'fcmTokens');
-                            await addDoc(tokensRef, { token: currentToken, createdAt: serverTimestamp() });
-                            showToast('Berhasil berlangganan notifikasi.');
-                            enableNotificationsBtn.disabled = true;
-                            enableNotificationsBtn.innerHTML = '<i class="fas fa-check"></i> Notifikasi Aktif';
-                        } else {
-                            showToast('Gagal mendapatkan token. Izinkan notifikasi di pengaturan browser.', 'error');
-                        }
-                    } else {
-                        showToast('Izin notifikasi tidak diberikan.', 'error');
+                    // (PENTING) Anda harus mengisi VAPID key ini dari Firebase Console Anda
+                    const vapidKey = "GANTI_DENGAN_VAPID_KEY_ANDA_DARI_FIREBASE";
+                    
+                    if (vapidKey.startsWith("GANTI_DENGAN")) {
+                        showToast('Error: VAPID key belum diisi di dalam kode.', 'error');
+                        return;
                     }
-                } catch (error) {
-                    console.error('An error occurred while requesting permission. ', error);
-                    showToast('Terjadi error saat meminta izin.', 'error');
+
+                    // Berikan registrasi manual ke getToken
+                    const currentToken = await getToken(messaging, { 
+                        vapidKey: vapidKey,
+                        serviceWorkerRegistration: swRegistration
+                    });
+                    
+                    if (currentToken) {
+                        console.log('FCM Token:', currentToken);
+                        // Simpan token ini ke Firestore
+                        const tokensRef = collection(db, 'fcmTokens');
+                        await addDoc(tokensRef, { token: currentToken, createdAt: serverTimestamp() });
+                        showToast('Berhasil berlangganan notifikasi.');
+                        enableNotificationsBtn.disabled = true;
+                        enableNotificationsBtn.innerHTML = '<i class="fas fa-check"></i> Notifikasi Aktif';
+                    } else {
+                        showToast('Gagal mendapatkan token. Izinkan notifikasi di pengaturan browser.', 'error');
+                    }
+                } else {
+                    showToast('Izin notifikasi tidak diberikan.', 'error');
                 }
-            };
-        
+            } catch (error) {
+                console.error('An error occurred while requesting permission. ', error);
+                showToast('Terjadi error saat meminta izin.', 'error');
+            }
+        };
         // Event listener untuk tombol aktivasi notifikasi
         if(enableNotificationsBtn) {
             enableNotificationsBtn.addEventListener('click', requestNotificationPermission);
