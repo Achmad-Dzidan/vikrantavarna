@@ -257,11 +257,19 @@
                 if (permission === 'granted') {
                     showToast('Izin notifikasi diberikan!');
                     
+                    // (PENTING) Daftarkan service worker secara manual dengan path yang benar
+                    // Ganti 'vikrantavarna' jika nama repository Anda berbeda
+                    const swRegistration = await navigator.serviceWorker.register('/vikrantavarna/firebase-messaging-sw.js');
+
                     // Dapatkan VAPID key dari Firebase Console Anda
                     // Project Settings > Cloud Messaging > Web configuration > Web Push certificates
                     const vapidKey = "GANTI_DENGAN_VAPID_KEY_ANDA_DARI_FIREBASE";
                     
-                    const currentToken = await getToken(messaging, { vapidKey: vapidKey });
+                    // Berikan registrasi manual ke getToken
+                    const currentToken = await getToken(messaging, { 
+                        vapidKey: vapidKey,
+                        serviceWorkerRegistration: swRegistration
+                    });
                     
                     if (currentToken) {
                         console.log('FCM Token:', currentToken);
@@ -282,7 +290,6 @@
                 showToast('Terjadi error saat meminta izin.', 'error');
             }
         };
-
         // Event listener untuk tombol aktivasi notifikasi
         if(enableNotificationsBtn) {
             enableNotificationsBtn.addEventListener('click', requestNotificationPermission);
