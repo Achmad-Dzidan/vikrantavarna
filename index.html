@@ -70,11 +70,11 @@
                         </div>
                         <span id="progressPercentage" class="progress-percentage">0%</span>
                     </div>
-                    <div class="notification-prompt">
+                    <!-- <div class="notification-prompt">
                         <button id="enableNotificationsBtn" class="btn-secondary">
                             <i class="fas fa-bell"></i> Aktifkan Notifikasi Tugas
                         </button>
-                    </div>
+                    </div> -->
                 </div>
             </div>
 
@@ -224,13 +224,13 @@
         import { getFirestore, doc, collection, setDoc, onSnapshot, addDoc, serverTimestamp, query, where, updateDoc } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js";
 
         const firebaseConfig = {
-            apiKey: "AIzaSyCJcvMENgl2jqjgQ659R4WJl_NR_vam1z0",
-            authDomain: "timeline-vikrantavarna.firebaseapp.com",
-            projectId: "timeline-vikrantavarna",
-            storageBucket: "timeline-vikrantavarna.firebasestorage.app",
-            messagingSenderId: "988549802115",
-            appId: "1:988549802115:web:d12bfe84697c269db553b6",
-            measurementId: "G-BMEG2N04N5"
+            apiKey: "AIzaSyBW_s50tO6zvNl-Jvkm6iQcbRMLebeLRgw",
+            authDomain: "vikrantavarna-ee40e.firebaseapp.com",
+            projectId: "vikrantavarna-ee40e",
+            storageBucket: "vikrantavarna-ee40e.firebasestorage.app",
+            messagingSenderId: "880669712876",
+            appId: "1:880669712876:web:7c873784fde86d4679a0c9",
+            measurementId: "G-SD61TKCVQ3"
         };
 
         const app = initializeApp(firebaseConfig);
@@ -441,6 +441,51 @@
                 myDoughnutChart.data.datasets[0].data = newData;
                 myDoughnutChart.update();
             };
+
+            // === Fungsi untuk merender item linimasa ===
+            const renderTimelineItem = (item) => {
+                const li = document.createElement('li');
+                li.className = 'timeline-item';
+                li.setAttribute('data-id', item.id);
+
+                function formatDate(dateString) {
+                    const date = new Date(dateString);
+                    const day = date.getDate();
+                    const monthNames = [
+                        'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+                        'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+                    ];
+                    const month = monthNames[date.getMonth()];
+                    const year = date.getFullYear();
+                    return `${day} ${month} ${year}`;
+                }
+
+                li.innerHTML = `
+                    <div class="item-date">${formatDate(item.date)}</div>
+                    <h3 class="item-title">${item.title}</h3>
+                    <p class="item-desc">${item.description.replace(/\n/g, '<br>')}</p>
+                `;
+                return li;
+            };
+
+            const loadTimelineItems = () => {
+                onSnapshot(timelineCollectionRef, (snapshot) => {
+                    const timelineList = document.getElementById('timelineList');
+                    if (!timelineList) return;
+                    timelineList.innerHTML = '';
+
+                    const items = [];
+                    snapshot.forEach(doc => {
+                        items.push({ id: doc.id, ...doc.data() });
+                    });
+
+                    items.sort((a, b) => new Date(a.date) - new Date(b.date));
+                    items.forEach(item => {
+                        timelineList.appendChild(renderTimelineItem(item));
+                    });
+                });
+            };
+
             
             const renderAllDivisionTasks = () => {
                 const selectedDateString = `2025-${String(activeMonth).padStart(2, '0')}-${String(activeDate).padStart(2, '0')}`;
@@ -499,6 +544,62 @@
                     setTimeout(() => toast.remove(), 500);
                 }, 3000);
             };
+
+            window.openAddModal = () => {
+                const timelineModal = document.getElementById('timelineModal');
+                if (timelineModal) {
+                    timelineModal.style.display = 'block';
+                }
+            };
+            window.closeModal = () => {
+                const timelineModal = document.getElementById('timelineModal');
+                if (timelineModal) {
+                    timelineModal.style.display = 'none';
+                }
+            };
+
+            window.onclick = function(event) {
+                const modal = document.getElementById('timelineModal');
+                if (event.target === modal) {
+                    modal.style.display = "none";
+                }
+            };
+
+
+            window.saveTimelineItem = async () => {
+                const modalId = document.getElementById('modalId').value;
+                const modalDate = document.getElementById('modalDate').value;
+                const title = document.getElementById('modalTitleInput').value;
+                const desc = document.getElementById('modalDesc').value;
+
+                if (!modalDate || !title || !desc) {
+                    alert("Semua bidang harus diisi.");
+                    return;
+                }
+
+                const data = {
+                    date: modalDate,
+                    title: title,
+                    description: desc,
+                    createdAt: serverTimestamp()
+                };
+
+                try {
+                    if (modalId) {
+                        const docRef = doc(timelineCollectionRef, modalId);
+                        await setDoc(docRef, data, { merge: true });
+                    } else {
+                        await addDoc(timelineCollectionRef, data);
+                    }
+
+                    alert("Item berhasil disimpan!");
+                    closeModal();
+                } catch (error) {
+                    console.error("Gagal menyimpan linimasa:", error);
+                    alert("Terjadi kesalahan saat menyimpan.");
+                }
+            };
+
 
             // Fungsi inti untuk menyimpan data, bisa dipanggil oleh kedua tombol
             const handleSaveTask = async (shouldShare = false) => {
@@ -640,6 +741,7 @@ Mohon perhatiannya. Terima kasih dan semangat! ✨
                 allTasksCache = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 activateCurrentDateTabs();
                 renderAllDivisionTasks();
+                loadTimelineItems();
             });
         });
     </script>

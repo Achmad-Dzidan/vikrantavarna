@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linimasa & Tim Proyek</title>
+    <link rel="icon" type="image/x-icon" href="/src/logo.jpg">
+    <!-- Pastikan path ke file CSS Anda benar -->
+    <link rel="stylesheet" href="style/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+
+    <div class="main-wrapper">
+        <div class="card-backdrop"></div>
+        
+        <div class="content-stack">
+            <!-- Kartu Judul -->
+            <div class="card headd-container">
+                <p>Linimasa Kuliah Kerja Nyata</p>
+                <p>VIKRANTAVARNA</p>
+                <p><span class="headd">Universitas Islam Negeri Syarif Hidayatullah Jakarta</span></p>
+            </div>
+            
+            <!-- Kartu Linimasa Proyek -->
+            <div class="card timeline-container">
+                <h2>Linimasa Proyek Terperinci</h2>
+                <ul class="timeline" id="timelineList">
+                    <!-- Konten diisi secara dinamis dari Firebase -->
+                </ul>
+                 <div class="timeline-item-actions">
+                    <button class="btn-add" onclick="openAddModal()">Tambah</button>
+                </div>
+            </div>
+
+            <!-- Kartu Gambaran Umum Proyek (Chart) -->
+            <div class="card overview-container">
+                <h2>Gambaran Umum Proyek</h2>
+                <p>Visualisasi ini menunjukkan distribusi total tugas di antara semua divisi selama periode KKN. Gunakan bagan ini untuk mendapatkan pemahaman cepat tentang beban kerja setiap divisi.</p>
+                <div class="chart-wrapper">
+                    <canvas id="myDoughnutChart"></canvas>
+                </div>
+            </div>
+            
+            <!-- Kartu Kemajuan Total -->
+            <div class="card progress-container">
+                <h2>Kemajuan Bulan Ini</h2>
+                <p>Ini adalah total kemajuan dari semua tugas yang tercatat untuk bulan yang sedang Anda lihat. Lacak progres keseluruhan Anda dengan cepat.</p>
+                <div class="progress-section">
+                    <label class="progress-label">Total Kemajuan Bulan Ini</label>
+                    <div class="progress-bar-wrapper">
+                        <div class="progress-bar-background">
+                            <div id="progressBarFill" class="progress-bar-fill"></div>
+                        </div>
+                        <span id="progressPercentage" class="progress-percentage">0%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kartu Progress Detail per Divisi -->
+            <div class="card task-progress-card">
+                <h2>Kemajuan Progress</h2>
+                <p>Pilih bulan untuk melihat tugas yang diuraikan per divisi. Centang kotak di sebelah setiap tugas untuk menandainya sebagai selesai dan lacak kemajuan Anda secara waktu nyata melalui bilah kemajuan.</p>
+                <div class="tabs-nav">
+                    <button class="tab-link active" data-tab="juni">Juni</button>
+                    <button class="tab-link" data-tab="juli">Juli</button>
+                </div>
+                <div class="tabs-content">
+                    <div id="juni" class="tab-pane active">
+                        <!-- Semua kartu nested ada di sini -->
+                        <div class="nested-card" id="progress-ketua-wakil">
+                            <h3>Ketua dan Wakil</h3>
+                            <div class="progress-section">
+                                <label class="progress-label">Kemajuan</label>
+                                <div class="progress-bar-wrapper">
+                                    <div class="progress-bar-background">
+                                        <div id="ketuaWakilProgressBarFill" class="progress-bar-fill"></div>
+                                    </div>
+                                    <span id="ketuaWakilPercentage" class="progress-percentage">0%</span>
+                                </div>
+                            </div>
+                            <div class="task-list">
+                                <p class="week-label">Minggu 1-4</p>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="tugasKetua1" class="task-checkbox" data-parent-id="progress-ketua-wakil">
+                                    <label for="tugasKetua1">Memantau semua progress divisi</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="tugasKetua2" class="task-checkbox" data-parent-id="progress-ketua-wakil">
+                                    <label for="tugasKetua2">Memimpin kelompok</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="nested-card" id="progress-bendahara">
+                            <h3>Bendahara</h3>
+                            <div class="progress-section">
+                                <label class="progress-label">Kemajuan</label>
+                                <div class="progress-bar-wrapper">
+                                    <div class="progress-bar-background">
+                                        <div id="bendaharaProgressBarFill" class="progress-bar-fill"></div>
+                                    </div>
+                                    <span id="bendaharaPercentage" class="progress-percentage">0%</span>
+                                </div>
+                            </div>
+                            <div class="task-list">
+                                <p class="week-label">Minggu 1</p>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="tugasBendahara1" class="task-checkbox" data-parent-id="progress-bendahara">
+                                    <label for="tugasBendahara1">Pemantauan Pemasukan Dana</label>
+                                </div>
+                                <p class="week-label" style="margin-top: 16px;">Minggu 2</p>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="tugasBendahara2" class="task-checkbox" data-parent-id="progress-bendahara">
+                                    <label for="tugasBendahara2">Pemantauan Pemasukan Dana</label>
+                                </div>
+                                <p class="week-label" style="margin-top: 16px;">Minggu 3</p>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="tugasBendahara3" class="task-checkbox" data-parent-id="progress-bendahara">
+                                    <label for="tugasBendahara3">Pemantauan Pemasukan Dana</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="tugasBendahara4" class="task-checkbox" data-parent-id="progress-bendahara">
+                                    <label for="tugasBendahara4">Fiksasi RAB yang ada di proposal</label>
+                                </div>
+                                <p class="week-label" style="margin-top: 16px;">Minggu 4</p>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="tugasBendahara5" class="task-checkbox" data-parent-id="progress-bendahara">
+                                    <label for="tugasBendahara5">Pemantauan Pemasukan Dana</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="nested-card" id="progress-sekertaris">
+                            <h3>Sekertaris</h3>
+                            <div class="progress-section">
+                                <label class="progress-label">Kemajuan</label>
+                                <div class="progress-bar-wrapper">
+                                    <div class="progress-bar-background">
+                                        <div id="sekertarisProgressBarFill" class="progress-bar-fill"></div>
+                                    </div>
+                                    <span id="sekertarisPercentage" class="progress-percentage">0%</span>
+                                </div>
+                            </div>
+                            <div class="task-list">
+                                <p class="week-label">Minggu 1</p>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="tugasSekertaris1" class="task-checkbox" data-parent-id="progress-sekertaris">
+                                    <label for="tugasSekertaris1">Transparansi terkait progress per divisi hasil notulensi</label>
+                                </div>
+                                <p class="week-label" style="margin-top: 16px;">Minggu 2</p>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="tugasSekertaris2" class="task-checkbox" data-parent-id="progress-sekertaris">
+                                    <label for="tugasSekertaris2">Membuat Draft Proposal</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="tugasSekertaris3" class="task-checkbox" data-parent-id="progress-sekertaris">
+                                    <label for="tugasSekertaris3">Transparansi terkait progress per divisi hasil notulensi</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="tugasSekertaris4" class="task-checkbox" data-parent-id="progress-sekertaris">
+                                    <label for="tugasSekertaris4">Menentukan dan menetapkan birokrasi serta SOP terkait penomoran surat</label>
+                                </div>
+                                <p class="week-label" style="margin-top: 16px;">Minggu 3</p>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="tugasSekertaris5" class="task-checkbox" data-parent-id="progress-sekertaris">
+                                    <label for="tugasSekertaris5">Membuat dan mengedarkan surat-surat resmi</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="tugasSekertaris6" class="task-checkbox" data-parent-id="progress-sekertaris">
+                                    <label for="tugasSekertaris6">Merapikan dan mengarsipkan semua dokumen digital</label>
+                                </div>
+                                <p class="week-label" style="margin-top: 16px;">Minggu 4</p>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="tugasSekertaris7" class="task-checkbox" data-parent-id="progress-sekertaris">
+                                    <label for="tugasSekertaris7">Menyusun Laporan Pertanggungjawaban (LPJ)</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="nested-card" id="progress-acara">
+                                <h3>Acara</h3>
+                                <div class="progress-section">
+                                    <label class="progress-label">Kemajuan</label>
+                                    <div class="progress-bar-wrapper">
+                                        <div class="progress-bar-background">
+                                            <div id="acaraProgressBarFill" class="progress-bar-fill"></div>
+                                        </div>
+                                        <span id="acaraPercentage" class="progress-percentage">0%</span>
+                                    </div>
+                                </div>
+                                <div class="task-list">
+                                    <p class="week-label">Minggu 1</p>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="tugasAcara1" class="task-checkbox" data-parent-id="progress-acara">
+                                        <label for="tugasAcara1">Merancang Nama, Jargon, Tema</label>
+                                    </div>
+                                    
+                                    <p class="week-label" style="margin-top: 16px;">Minggu 2</p>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="tugasAcara2" class="task-checkbox" data-parent-id="progress-acara">
+                                        <label for="tugasAcara2">Memilah dan menentukan program kerja yang mau dibawa di kelompok kkn</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="tugasAcara3" class="task-checkbox" data-parent-id="progress-acara">
+                                        <label for="tugasAcara3">Setor RAB ke Bendahara</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="tugasAcara4" class="task-checkbox" data-parent-id="progress-acara">
+                                        <label for="tugasAcara4">Finish Nama, Jargon, dan Tema</label>
+                                    </div>
+
+                                    <p class="week-label" style="margin-top: 16px;">Minggu 3</p>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="tugasAcara5" class="task-checkbox" data-parent-id="progress-acara">
+                                        <label for="tugasAcara5">Fiksasi program kerja</label>
+                                    </div>
+
+                                    <p class="week-label" style="margin-top: 16px;">Minggu 4</p>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="tugasAcara6" class="task-checkbox" data-parent-id="progress-acara">
+                                        <label for="tugasAcara6">Membuat booklet dengan kegiatan yang sudah fiks yang mau kita bawa</label>
+                                    </div>
+                                </div>
+                        </div>
+
+                        <div class="nested-card" id="progress-humas">
+                                <h3>Humas</h3>
+                                <div class="progress-section">
+                                    <label class="progress-label">Kemajuan</label>
+                                    <div class="progress-bar-wrapper">
+                                        <div class="progress-bar-background">
+                                            <div id="humasProgressBarFill" class="progress-bar-fill"></div>
+                                        </div>
+                                        <span id="humasPercentage" class="progress-percentage">0%</span>
+                                    </div>
+                                </div>
+                                <div class="task-list">
+                                    <p class="week-label">Minggu 1</p>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="tugasHumas1" class="task-checkbox" data-parent-id="progress-humas">
+                                        <label for="tugasHumas1">Membuat List Nama Instansi</label>
+                                    </div>
+                                    
+                                    <p class="week-label" style="margin-top: 16px;">Minggu 2</p>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="tugasHumas2" class="task-checkbox" data-parent-id="progress-humas">
+                                        <label for="tugasHumas2">Sosialisasi dan membuat template broadcast untuk pengiriman proposal</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="tugasHumas3" class="task-checkbox" data-parent-id="progress-humas">
+                                        <label for="tugasHumas3">Setor RAB ke Bendahara</label>
+                                    </div>
+
+                                    <p class="week-label" style="margin-top: 16px;">Minggu 3</p>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="tugasHumas4" class="task-checkbox" data-parent-id="progress-humas">
+                                        <label for="tugasHumas4">Penyebaran broadcast internal kepada anggota kelompok</label>
+                                    </div>
+
+                                    <p class="week-label" style="margin-top: 16px;">Minggu 4</p>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="tugasHumas5" class="task-checkbox" data-parent-id="progress-humas">
+                                        <label for="tugasHumas5">Follow up hasil penyerahan proposal transparansi ke anggota kelompok</label>
+                                    </div>
+                                </div>
+                        </div>
+
+                        <div class="nested-card" id="progress-pdd">
+                                <h3>PDD</h3>
+                                <div class="progress-section">
+                                    <label class="progress-label">Kemajuan</label>
+                                    <div class="progress-bar-wrapper">
+                                        <div class="progress-bar-background">
+                                            <div id="pddProgressBarFill" class="progress-bar-fill"></div>
+                                        </div>
+                                        <span id="pddPercentage" class="progress-percentage">0%</span>
+                                    </div>
+                                </div>
+                                <div class="task-list">
+                                    <p class="week-label">Minggu 1</p>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="tugasPdd1" class="task-checkbox" data-parent-id="progress-pdd">
+                                        <label for="tugasPdd1">Membuat Logo, dan Start Desain, Colour Pallete, Membuat Sosmed</label>
+                                    </div>
+                                    
+                                    <p class="week-label" style="margin-top: 16px;">Minggu 2</p>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="tugasPdd2" class="task-checkbox" data-parent-id="progress-pdd">
+                                        <label for="tugasPdd2">Fiksasi logo</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="tugasPdd3" class="task-checkbox" data-parent-id="progress-pdd">
+                                        <label for="tugasPdd3">Desain live report</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="tugasPdd4" class="task-checkbox" data-parent-id="progress-pdd">
+                                        <label for="tugasPdd4">Start feeds IG</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="tugasPdd5" class="task-checkbox" data-parent-id="progress-pdd">
+                                        <label for="tugasPdd5">Start bikin konten yang menaikkan insight sosmed</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="tugasPdd6" class="task-checkbox" data-parent-id="progress-pdd">
+                                        <label for="tugasPdd6">Membuat desain cover proposal</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="tugasPdd7" class="task-checkbox" data-parent-id="progress-pdd">
+                                        <label for="tugasPdd7">Setor RAB ke Bendahara</label>
+                                    </div>
+
+                                    <p class="week-label" style="margin-top: 16px;">Minggu 3</p>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="tugasPdd8" class="task-checkbox" data-parent-id="progress-pdd">
+                                        <label for="tugasPdd8">Fiksasi desain final cover proposal dan page desain ke Sekertaris</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="tugasPdd9" class="task-checkbox" data-parent-id="progress-pdd">
+                                        <label for="tugasPdd9">Foto kepengurusan Offline</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="tugasPdd10" class="task-checkbox" data-parent-id="progress-pdd">
+                                        <label for="tugasPdd10">Memikirkan konsep foto</label>
+                                    </div>
+
+                                    <p class="week-label" style="margin-top: 16px;">Minggu 4</p>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="tugasPdd11" class="task-checkbox" data-parent-id="progress-pdd">
+                                        <label for="tugasPdd11">Membuat video dokumentasi akhir kegiatan</label>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+
+                    <div id="juli" class="tab-pane">
+                        <p style="text-align: center; color: #65676b; padding: 20px 0;">Konten untuk bulan Juli akan ditampilkan di sini.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card headd-container end">
+                <p><span class="headd">Made with <i class="fas fa-heart" style="color: #e74c3c;"></i> by Achmad Dzidan</span></p>
+            </div>
+        </div>
+    </div>
+
+    <div id="timelineModal" class="modal">
+        <div class="modal-content">
+            <h3 id="modalTitle">Tambah Item Linimasa</h3>
+            <input type="text" id="modalId" hidden>
+            <input type="date" id="modalDate" required>
+            <input type="text" id="modalTitleInput" placeholder="Judul" required>
+            <textarea id="modalDesc" placeholder="Deskripsi" required></textarea>
+            <button class="btn-save" onclick="saveTimelineItem()">Simpan</button>
+            <button class="btn-cancel" onclick="closeModal()">Batal</button>
+        </div>
+    </div>
+
+    <!-- HANYA SATU SCRIPT TAG UNTUK CHART.JS -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- HANYA SATU BLOK SCRIPT UNTUK SEMUA LOGIKA APLIKASI -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
+        import { getFirestore, doc, setDoc, onSnapshot, collection, addDoc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCJcvMENgl2jqjgQ659R4WJl_NR_vam1z0",
+            authDomain: "timeline-vikrantavarna.firebaseapp.com",
+            projectId: "timeline-vikrantavarna",
+            storageBucket: "timeline-vikrantavarna.firebasestorage.app",
+            messagingSenderId: "988549802115",
+            appId: "1:988549802115:web:d12bfe84697c269db553b6",
+            measurementId: "G-BMEG2N04N5"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const progressDocRef = doc(db, "progress", "mainState");
+        const timelineCollectionRef = collection(db, "timeline");
+
+        const ctx = document.getElementById('myDoughnutChart');
+        if (ctx) {
+            const chartData = {
+                labels: ['Ketua','Sekertaris','Bendahara','Acara','Humas','PDD'],
+                datasets: [{
+                    label: 'Jumlah Tugas',
+                    data: [2, 7, 5, 6, 5, 9],
+                    backgroundColor: ['#3498db','#9b59b6','#e67e22','#e74c3c','#1abc9c','#7f8c8d'],
+                    borderColor: '#f0f2f5',
+                    borderWidth: 4,
+                    hoverOffset: 8
+                }]
+            };
+            const chartConfig = { type: 'doughnut', data: chartData, options: { responsive: true, maintainAspectRatio: false, cutout: '60%', plugins: { legend: { position: 'bottom', labels: { padding: 20, boxWidth: 12, font: { family: "'Roboto', sans-serif" }}}, tooltip: { callbacks: { label: function(context) { let label = context.label || ''; if (label) { label += ': '; } if (context.parsed !== null) { label += context.parsed + ' Tugas'; } return label; } } } } } };
+            new Chart(ctx, chartConfig);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            function updateProgressUI(percentage, barFillElement, percentageTextElement) {
+                if (!barFillElement || !percentageTextElement) return;
+                const validPercentage = Math.max(0, Math.min(100, percentage));
+                barFillElement.style.width = validPercentage + '%';
+                percentageTextElement.textContent = Math.round(validPercentage) + '%';
+            }
+
+            function updateTaskProgress(parentElement) {
+                if (!parentElement) return;
+                const checkboxes = parentElement.querySelectorAll('.task-checkbox');
+                const checkedCount = parentElement.querySelectorAll('.task-checkbox:checked').length;
+                const percentage = checkboxes.length > 0 ? (checkedCount / checkboxes.length) * 100 : 0;
+                const barFill = parentElement.querySelector('.progress-bar-fill');
+                const percentageText = parentElement.querySelector('.progress-percentage');
+                updateProgressUI(percentage, barFill, percentageText);
+            }
+
+            function updateTotalProgress() {
+                const allTasks = document.querySelectorAll('.task-progress-card .task-checkbox');
+                const checkedTasks = document.querySelectorAll('.task-progress-card .task-checkbox:checked');
+                const totalPercentage = allTasks.length > 0 ? (checkedTasks.length / allTasks.length) * 100 : 0;
+                const totalBarFill = document.getElementById('progressBarFill');
+                const totalPercentageText = document.getElementById('progressPercentage');
+                updateProgressUI(totalPercentage, totalBarFill, totalPercentageText);
+            }
+
+            async function saveStatesToFirebase() {
+                const states = {};
+                document.querySelectorAll('.task-checkbox').forEach(checkbox => {
+                    states[checkbox.id] = checkbox.checked;
+                });
+                try {
+                    await setDoc(progressDocRef, states, { merge: true });
+                } catch (e) {
+                    console.error("Error saving progress to Firebase: ", e);
+                }
+            }
+
+            function listenToProgressChanges() {
+                onSnapshot(progressDocRef, (doc) => {
+                    const serverStates = doc.data();
+                    if (serverStates) {
+                        document.querySelectorAll('.task-checkbox').forEach(checkbox => {
+                            if (serverStates[checkbox.id] !== undefined) {
+                                checkbox.checked = serverStates[checkbox.id];
+                            }
+                        });
+                        document.querySelectorAll('.nested-card[id]').forEach(container => {
+                            updateTaskProgress(container);
+                        });
+                        updateTotalProgress();
+                    }
+                });
+            }
+
+        function renderTimelineItem(item) {
+            const li = document.createElement('li');
+            li.className = 'timeline-item';
+            li.setAttribute('data-id', item.id);
+
+            // Fungsi untuk memformat tanggal
+            function formatDate(dateString) {
+                const date = new Date(dateString);
+                const day = date.getDate();
+                const monthNames = [
+                    'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+                    'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+                ];
+                const month = monthNames[date.getMonth()];
+                const year = date.getFullYear();
+                return `${day} ${month} ${year}`;
+            }
+
+            li.innerHTML = `
+                <div class="item-date">${formatDate(item.date)}</div>
+                <h3 class="item-title">${item.title}</h3>
+                <p class="item-desc">${item.description.replace(/\n/g, '<br>')}</p>
+            `;
+            return li;
+        }
+
+        function loadTimelineItems() {
+            onSnapshot(timelineCollectionRef, (snapshot) => {
+                const timelineList = document.getElementById('timelineList');
+                timelineList.innerHTML = '';
+
+                // Kumpulkan semua item dari snapshot
+                const items = [];
+                snapshot.forEach(doc => {
+                    items.push({ id: doc.id, ...doc.data() });
+                });
+
+                // Urutkan item berdasarkan tanggal (terlama ke terbaru)
+                items.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+                // Render item yang sudah diurutkan
+                items.forEach(item => {
+                    timelineList.appendChild(renderTimelineItem(item));
+                });
+            });
+        }
+
+            window.openAddModal = function() {
+                document.getElementById('modalTitle').textContent = 'Tambah Item Linimasa';
+                document.getElementById('modalId').value = '';
+                document.getElementById('modalDate').value = '';
+                document.getElementById('modalTitleInput').value = '';
+                document.getElementById('modalDesc').value = '';
+                document.getElementById('timelineModal').style.display = 'flex';
+            };
+
+            window.editTimelineItem = function(id) {
+                const itemRef = doc(timelineCollectionRef, id);
+                onSnapshot(itemRef, (doc) => {
+                    if (doc.exists()) {
+                        const item = doc.data();
+                        document.getElementById('modalTitle').textContent = 'Edit Item Linimasa';
+                        document.getElementById('modalId').value = id;
+                        document.getElementById('modalDate').value = item.date;
+                        document.getElementById('modalTitleInput').value = item.title;
+                        document.getElementById('modalDesc').value = item.description;
+                        document.getElementById('timelineModal').style.display = 'flex';
+                    }
+                });
+            };
+
+            window.saveTimelineItem = async function() {
+                const id = document.getElementById('modalId').value;
+                const date = document.getElementById('modalDate').value;
+                const title = document.getElementById('modalTitleInput').value;
+                const desc = document.getElementById('modalDesc').value;
+                if (!date || !title || !desc) {
+                    alert('Semua field harus diisi!');
+                    return;
+                }
+                try {
+                    const data = { date, title, description: desc };
+                    if (id) {
+                        await updateDoc(doc(timelineCollectionRef, id), data);
+                    } else {
+                        await addDoc(timelineCollectionRef, data);
+                    }
+                    closeModal();
+                } catch (e) {
+                    console.error("Error saving timeline item: ", e);
+                    alert('Gagal menyimpan item linimasa.');
+                }
+            };
+
+            window.deleteTimelineItem = async function(id) {
+                if (confirm('Apakah Anda yakin ingin menghapus item ini?')) {
+                    try {
+                        await deleteDoc(doc(timelineCollectionRef, id));
+                    } catch (e) {
+                        console.error("Error deleting timeline item: ", e);
+                        alert('Gagal menghapus item linimasa.');
+                    }
+                }
+            };
+
+            window.closeModal = function() {
+                document.getElementById('timelineModal').style.display = 'none';
+            };
+
+            document.querySelectorAll('.tab-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    const tabId = link.getAttribute('data-tab');
+                    document.querySelectorAll('.tab-link').forEach(item => item.classList.remove('active'));
+                    document.querySelectorAll('.tab-pane').forEach(item => item.classList.remove('active'));
+                    link.classList.add('active');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+
+            document.querySelectorAll('.task-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', () => {
+                    const parentId = checkbox.getAttribute('data-parent-id');
+                    const parentElement = document.getElementById(parentId);
+                    updateTaskProgress(parentElement);
+                    updateTotalProgress();
+                    saveStatesToFirebase();
+                });
+            });
+
+            listenToProgressChanges();
+            loadTimelineItems();
+        });
+    </script>
+</body>
+</html>

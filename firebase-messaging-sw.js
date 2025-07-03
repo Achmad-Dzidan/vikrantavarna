@@ -4,13 +4,13 @@ self.importScripts('firebase-libs/firebase-messaging.js');
 
 // Konfigurasi Firebase Anda (SAMA DENGAN DI INDEX.HTML)
 const firebaseConfig = {
-    apiKey: "AIzaSyCJcvMENgl2jqjgQ659R4WJl_NR_vam1z0",
-    authDomain: "timeline-vikrantavarna.firebaseapp.com",
-    projectId: "timeline-vikrantavarna",
-    storageBucket: "timeline-vikrantavarna.firebasestorage.app",
-    messagingSenderId: "988549802115",
-    appId: "1:988549802115:web:d12bfe84697c269db553b6",
-    measurementId: "G-BMEG2N04N5"
+    apiKey: "AIzaSyBW_s50tO6zvNl-Jvkm6iQcbRMLebeLRgw",
+    authDomain: "vikrantavarna-ee40e.firebaseapp.com",
+    projectId: "vikrantavarna-ee40e",
+    storageBucket: "vikrantavarna-ee40e.firebasestorage.app",
+    messagingSenderId: "880669712876",
+    appId: "1:880669712876:web:7c873784fde86d4679a0c9",
+    measurementId: "G-SD61TKCVQ3"
 };
 
 // (MODIFIKASI) Inisialisasi Firebase menggunakan namespace 'firebase'
