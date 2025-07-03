@@ -1,256 +1,174 @@
 /* --- General Styling --- */
-        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
 
-        body {
-            background-color: #121212; /* Latar belakang gelap */
-            font-family: 'Roboto', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 40px 20px;
-            box-sizing: border-box;
-        }
-
-        /* --- Wrapper Utama untuk efek tumpukan --- */
-        .main-wrapper {
-            position: relative;
-            max-width: 400px;
-            width: 100%;
-        }
-        
-        /* --- (BARU) Container Latar Belakang --- */
-        .card-backdrop {
-            position: absolute;
-            background-color: #3a3b3c; /* Warna latar belakang yang sedikit lebih gelap */
-            border-radius: 20px; /* Radius sedikit lebih besar dari kartu utama */
-            z-index: 0; /* Pastikan berada di belakang */
-            /* Mengatur agar sedikit lebih besar dari konten di depannya */
-            top: -15px;
-            left: -15px;
-            right: -15px;
-            bottom: -15px;
-            /* transform: rotate(-1.5deg); */
-        }
-        
-        /* --- (BARU) Penampung untuk semua kartu konten --- */
-        .content-stack {
-            position: relative;
-            z-index: 1; /* Pastikan berada di depan backdrop */
-            display: flex;
-            flex-direction: column;
-            gap: 16px; /* Jarak antara kartu linimasa dan kartu pemimpin */
-        }
-
-        .timeline-item-actions {
-            margin-top: 10px;
-            display: flex;
-            gap: 10px;
-        }
-        .timeline-item-actions button {
-            padding: 5px 10px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-        .btn-add {
-            background-color: #28a745;
-            color: white;
-        }
-        .btn-edit {
-            background-color: #ffc107;
-            color: black;
-        }
-        .btn-delete {
-            background-color: #dc3545;
-            color: white;
-        }
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.5);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000; /* Menambahkan z-index tinggi untuk memastikan modal di atas semua elemen */
-        }
-        .modal-content {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            width: 400px;
-            max-width: 90%;
-            z-index: 1001; /* z-index lebih tinggi untuk konten modal */
-        }
-        .modal-content h3 {
-            margin-top: 0;
-        }
-        .modal-content input,
-        .modal-content textarea {
-            width: 100%;
-            margin-bottom: 10px;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        .modal-content button {
-            padding: 8px 16px;
-            margin-right: 10px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        .btn-save {
-            background-color: #28a745;
-            color: white;
-        }
-        .btn-cancel {
-            background-color: #6c757d;
-            color: white;
-        }
-        /* Memastikan elemen lain tidak memiliki z-index yang lebih tinggi */
-        .main-wrapper, .card, .content-stack {
-            z-index: 1; /* z-index rendah untuk elemen lain */
-        }
-        
-        /* --- (MODIFIKASI) Kelas .card untuk styling bersama --- */
-        .card {
-            background-color: #f0f2f5;
-            border-radius: 16px;
-            padding: 24px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-        
-        
-        .card h2 {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: #1c1e21;
-            margin-top: 0;
-            margin-bottom: 8px;
-        }
-
-        .card p {
-            font-size: 0.875rem;
-            color: #65676b;
-            margin-top: 0;
-            margin-bottom: 24px;
-        }
-        
-        /* --- Timeline List Styling (Tidak berubah) --- */
-        .timeline {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            position: relative;
-        }
-        
-        .timeline::before {
-            content: '';
-            position: absolute;
-            top: 5px;
-            bottom: 5px;
-            left: 5px;
-            width: 2px;
-            background-color: #dcdfe3;
-        }
-        
-        .timeline-item {
-            position: relative;
-            padding-left: 30px;
-            margin-bottom: 20px;
-        }
-        
-        .timeline-item:last-child {
-            margin-bottom: 0;
-        }
-        
-        .timeline-item::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 5px;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background-color: #007bff;
-            border: 2px solid #f0f2f5;
-        }
-        
-        .timeline-item .item-title {
-            font-weight: 500;
-            color: #1c1e21;
-            margin: 0 0 4px 0;
-        }
-
-        .timeline-item .item-desc {
-            font-size: 0.875rem;
-            color: #65676b;
-            margin: 0;
-        }
-
-        .timeline-item .item-date {
-            font-size: 0.75rem;
-            color: #90949c;
-            margin-bottom: 6px;
-        }
-
-        /* --- (BARU) Leader Container Content Styling --- */
-        .leader-container p {
-            margin-bottom: 8px;
-        }
-
-        .headd-container {
-            background-color: #007bff;
-        }
-        
-        .headd-container p {
-            margin-bottom: 8px;
-            font-size: 28px;
-            text-align: center;
-            font-weight: bold;
-            color: #fff;
-        }
-        
-        .headd-container p .headd {
-            margin-bottom: 8px;
-            font-size: 15px;
-            font-weight: normal;
-        }
-
-        .leader-container .leader-name {
-            font-weight: 500;
-            color: #1c1e21;
-        }
-        
-                /* --- (BARU) Styling untuk Kartu Overview & Chart --- */
-        .overview-container p {
-            margin-bottom: 24px;
-        }
-
-        .chart-wrapper {
-            position: relative;
-            max-width: 300px; /* Batasi lebar maks chart */
-            margin: 0 auto;   /* Posisikan di tengah kartu */
-            height: 300px;    /* Beri ketinggian agar tidak gepeng saat loading */
-        }
-
-        /* --- (BARU) Styling untuk Kartu Progress Bar --- */
-.progress-container {
-    /* Bisa ditambahkan style khusus jika perlu */
+body {
+    background-color: #121212;
+    font-family: 'Roboto', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 40px 20px;
+    box-sizing: border-box;
 }
 
+/* --- Wrapper Utama --- */
+.main-wrapper {
+    position: relative;
+    max-width: 400px;
+    width: 100%;
+}
+
+.card-backdrop {
+    position: absolute;
+    background-color: #3a3b3c;
+    border-radius: 20px;
+    z-index: 0;
+    top: -15px;
+    left: -15px;
+    right: -15px;
+    bottom: -15px;
+}
+
+.content-stack {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* --- General Card Styling --- */
+.card {
+    background-color: #f0f2f5;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+}
+
+.card h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1c1e21;
+    margin-top: 0;
+    margin-bottom: 8px;
+}
+
+.card p {
+    font-size: 0.875rem;
+    color: #65676b;
+    margin-top: 0;
+    margin-bottom: 24px;
+}
+
+/* --- Desain untuk Pengumuman & Linimasa --- */
+.announcement,
+.timeline {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    position: relative;
+}
+
+.announcement::before,
+.timeline::before {
+    content: '';
+    position: absolute;
+    top: 5px;
+    bottom: 5px;
+    left: 5px;
+    width: 2px;
+    background-color: #dcdfe3;
+}
+
+.announcement-item,
+.timeline-item {
+    position: relative;
+    padding-left: 30px;
+    margin-bottom: 20px;
+}
+
+.announcement-item:last-child,
+.timeline-item:last-child {
+    margin-bottom: 0;
+}
+
+.announcement-item::before,
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 5px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #007bff;
+    border: 2px solid #f0f2f5;
+}
+
+.announcement-item .item-title,
+.timeline-item .item-title {
+    font-weight: 500;
+    color: #1c1e21;
+    margin: 0 0 4px 0;
+}
+
+.announcement-item .item-desc,
+.timeline-item .item-desc {
+    font-size: 0.875rem;
+    color: #65676b;
+    margin: 0;
+    line-height: 1.5;
+}
+
+.announcement-item .item-date,
+.timeline-item .item-date {
+    font-size: 0.75rem;
+    color: #90949c;
+    margin-bottom: 6px;
+}
+
+.announcement-item-actions,
+.timeline-item-actions {
+    margin-top: 20px;
+}
+
+/* --- Header Card Styling --- */
+.headd-container {
+    background-color: #007bff;
+    color: #fff;
+    text-align: center;
+}
+
+.headd-container p {
+    color: #fff;
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.headd-container p .headd {
+    font-size: 15px;
+    font-weight: normal;
+}
+
+/* --- Chart & Overview Card --- */
+.chart-wrapper {
+    position: relative;
+    max-width: 300px;
+    margin: 0 auto;
+    height: 300px;
+}
+
+/* --- Progress Bar Card --- */
 .progress-section {
-    margin-top: 24px; /* Jarak dari paragraf di atasnya */
+    margin-top: 16px;
 }
 
 .progress-label {
     display: block;
-    font-size: 0.8rem; /* 13px */
+    font-size: 0.8rem;
     font-weight: 500;
     color: #65676b;
     margin-bottom: 8px;
@@ -259,36 +177,34 @@
 .progress-bar-wrapper {
     display: flex;
     align-items: center;
-    gap: 12px; /* Jarak antara bar dan teks persen */
+    gap: 12px;
 }
 
 .progress-bar-background {
-    flex-grow: 1; /* Membuat bar memenuhi sisa ruang */
+    flex-grow: 1;
     height: 10px;
-    background-color: #e0e0e0; /* Warna latar bar */
+    background-color: #e0e0e0;
     border-radius: 5px;
-    overflow: hidden; /* Memastikan isian bar tetap di dalam */
+    overflow: hidden;
 }
 
 .progress-bar-fill {
     height: 100%;
-    width: 0%; /* Awalnya 0%, akan diubah oleh JavaScript */
-    background-color: #007bff; /* Warna biru primer yang konsisten */
+    width: 0%;
+    background-color: #007bff;
     border-radius: 5px;
-    transition: width 0.5s ease-in-out; /* Animasi saat progress berubah */
+    transition: width 0.5s ease-in-out;
 }
 
 .progress-percentage {
-    font-size: 0.9rem; /* 14px */
+    font-size: 0.9rem;
     font-weight: 500;
     color: #1c1e21;
-    min-width: 35px; /* Agar layout tidak bergeser saat persen berubah */
+    min-width: 35px;
     text-align: right;
 }
 
-/* --- (BARU) Styling untuk Kartu Progress Tugas --- */
-
-/* Navigasi Tab */
+/* --- Task Progress Card (Tabs) --- */
 .tabs-nav {
     display: flex;
     border-bottom: 1px solid #dcdfe3;
@@ -305,26 +221,58 @@
     font-weight: 500;
     color: #65676b;
     border-bottom: 3px solid transparent;
-    margin-bottom: -1px; /* Agar border bawah sejajar dengan border container */
+    margin-bottom: -1px;
 }
 
-/* Style untuk tab yang aktif */
 .tab-link.active {
     color: #007bff;
     border-bottom-color: #007bff;
 }
 
-/* Konten Tab */
 .tab-pane {
-    display: none; /* Sembunyikan semua konten tab secara default */
-}
-.tab-pane.active {
-    display: block; /* Tampilkan hanya konten tab yang aktif */
+    display: none;
 }
 
-/* Kartu Bersarang (Nested Card) */
+.tab-pane.active {
+    display: block;
+}
+
+.sub-tabs-nav {
+    display: flex;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 8px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.sub-tabs-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.sub-tab-link {
+    flex-shrink: 0;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    cursor: pointer;
+    margin-right: 8px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.sub-tab-link.active,
+.sub-tab-link:hover {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+/* --- Nested Division Cards --- */
 .nested-card {
-    background-color: #ffffff; /* Warna sedikit beda dari parent card */
+    background-color: #ffffff;
     border: 1px solid #e0e0e0;
     border-radius: 12px;
     padding: 16px;
@@ -338,15 +286,15 @@
     color: #1c1e21;
 }
 
-/* Daftar Tugas dengan Checkbox */
 .task-list {
     margin-top: 16px;
 }
-.week-label {
+
+p.no-task-msg {
+    text-align: center;
     font-size: 0.9rem;
-    font-weight: 500;
-    color: #1c1e21;
-    margin: 0 0 10px 0;
+    color: #888;
+    margin: 20px 0;
 }
 
 .checkbox-item {
@@ -356,165 +304,173 @@
 }
 
 .task-checkbox {
-    width: 18px;
-    height: 18px;
+    width: 20px;
+    height: 20px;
     margin-right: 12px;
     cursor: pointer;
+    flex-shrink: 0;
 }
 
 .checkbox-item label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    cursor: pointer;
     font-size: 0.9rem;
     color: #333;
-    cursor: pointer;
 }
 
-/* --- Cari aturan ini di file CSS Anda dan ganti dengan yang di bawah --- */
-
-.task-checkbox {
-    /* Atur ukuran yang seragam di sini */
-    width: 20px;
-    height: 20px;
-
-    /* Properti lain untuk menjaga konsistensi */
-    margin-right: 12px;
-    cursor: pointer;
-    flex-shrink: 0; /* Mencegah checkbox menyusut jika teksnya panjang */
+.task-time {
+    font-size: 0.8rem;
+    color: #888;
+    background-color: #f0f2f5;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: 10px;
+    white-space: nowrap;
 }
 
-        /* CSS yang sudah ada sebelumnya, tidak perlu diubah */
-        .timeline-container { position: relative; }
-        .timeline-item-actions { display: flex; gap: 10px; margin-top: 10px; }
-        .action-btn { background: none; border: none; cursor: pointer; font-size: 0.9rem; color: #65676b; padding: 5px; border-radius: 5px; transition: background-color 0.2s, color 0.2s; }
-        .action-btn.edit-btn:hover { background-color: #e0e0e0; color: #007bff; }
-        .action-btn.delete-btn:hover { background-color: #e0e0e0; color: #e74c3c; }
-        #addTimelineItemBtn { display: block; width: 100%; padding: 12px; margin-top: 20px; background-color: #007bff; color: white; border: none; border-radius: 8px; font-weight: 500; cursor: pointer; transition: background-color 0.2s; }
-        #addTimelineItemBtn:hover { background-color: #0056b3; }
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.6); display: flex; justify-content: center; align-items: center; z-index: 1000; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
-        .modal-overlay.visible { opacity: 1; visibility: visible; }
-        .modal-content { background-color: white; padding: 24px; border-radius: 12px; width: 90%; max-width: 450px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); transform: scale(0.95); transition: transform 0.3s ease; }
-        .modal-overlay.visible .modal-content { transform: scale(1); }
-        #timelineForm label { display: block; margin-top: 12px; margin-bottom: 4px; font-weight: 500; color: #333; }
-        #timelineForm input, #timelineForm textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; }
-        .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
-        .modal-actions button { padding: 10px 20px; border-radius: 6px; border: none; font-weight: 500; cursor: pointer; }
-        .btn-secondary { background-color: #e0e0e0; }
-        .btn-primary { background-color: #007bff; color: white; }
-        .btn-danger { background-color: #e74c3c; color: white; }
-        #confirmModal .modal-content { text-align: center; }
-        #confirmModal p { margin: 0 0 20px 0; color: #333; line-height: 1.5; }
-        #toast-container { position: fixed; bottom: 20px; right: 20px; z-index: 2000; display: flex; flex-direction: column; gap: 10px; }
-        .toast { padding: 12px 20px; border-radius: 8px; color: white; font-weight: 500; box-shadow: 0 3px 10px rgba(0,0,0,0.2); opacity: 0; transform: translateX(100%); transition: opacity 0.4s ease, transform 0.4s ease; }
-        .toast.show { opacity: 1; transform: translateX(0); }
-        .toast.success { background-color: #2ecc71; }
-        .toast.error { background-color: #e74c3c; }
-        
-        /* CSS untuk Nested Tabs */
-        .sub-tabs-nav {
-            display: flex;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch; /* Scroll lebih halus di iOS */
-            scrollbar-width: none; /* Sembunyikan scrollbar di Firefox */
-            padding-bottom: 8px;
-            margin-bottom: 16px;
-            border-bottom: 1px solid #e0e0e0;
-        }
-        /* Sembunyikan scrollbar di Chrome, Safari, Opera */
-        .sub-tabs-nav::-webkit-scrollbar {
-            display: none;
-        }
-        .sub-tab-link {
-            flex-shrink: 0;
-            padding: 8px 12px;
-            border: 1px solid #ccc;
-            background-color: #f9f9f9;
-            cursor: pointer;
-            margin-right: 8px;
-            border-radius: 6px;
-            font-size: 0.9rem;
-            transition: background-color 0.2s, color 0.2s;
-        }
-        .sub-tab-link.active, .sub-tab-link:hover {
-            background-color: #007bff;
-            color: white;
-            border-color: #007bff;
-        }
-        .sub-tab-pane {
-            display: none;
-        }
-        .sub-tab-pane.active {
-            display: block;
-        }
+/* --- Styling untuk SEMUA Modal --- */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: none; /* Diubah oleh JS menjadi flex */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
 
-        .checkbox-item label {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-        }
-        .task-time {
-            font-size: 0.8rem;
-            color: #888;
-            background-color: #f0f2f5;
-            padding: 2px 6px;
-            border-radius: 4px;
-            margin-left: 10px;
-        }
+.modal-overlay.visible {
+    display: flex;
+    opacity: 1;
+    visibility: visible;
+}
 
-        /* --- Styling untuk Input Waktu Bersebelahan --- */
+.modal-content {
+    background-color: #ffffff;
+    padding: 24px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 450px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    transform: scale(0.95);
+    transition: transform 0.3s ease;
+    color: #333;
+}
+
+.modal-overlay.visible .modal-content {
+    transform: scale(1);
+}
+
+.modal-content h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #1c1e21;
+}
+
+.modal-form label,
+.modal-content label {
+    display: block;
+    margin-top: 12px;
+    margin-bottom: 6px;
+    font-weight: 500;
+    color: #333;
+}
+
+.modal-form input,
+.modal-form textarea,
+.modal-content input,
+.modal-content textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1rem;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 24px;
+}
+
+.modal-actions button,
+.btn-add {
+    padding: 10px 20px;
+    border-radius: 6px;
+    border: none;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-secondary {
+    background-color: #e0e0e0;
+    color: #333;
+}
+.btn-secondary:hover {
+    background-color: #d5d5d5;
+}
+
+.btn-primary, .btn-save {
+    background-color: #007bff;
+    color: white;
+}
+.btn-primary:hover, .btn-save:hover {
+    background-color: #0056b3;
+}
+
+.btn-add {
+    background-color: #28a745;
+    color: white;
+}
+.btn-add:hover {
+    background-color: #218838;
+}
+
+.btn-cancel {
+     background-color: #6c757d;
+     color: white;
+}
+.btn-cancel:hover {
+    background-color: #5a6268;
+}
+
+#saveAndShareBtn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #25D366;
+}
+#saveAndShareBtn:hover {
+    background-color: #1EBE57;
+}
+
 .time-input-container {
     display: flex;
-    align-items: flex-end; /* Sejajarkan dengan bagian bawah input */
+    align-items: flex-end;
     justify-content: space-between;
     gap: 10px;
     margin-top: 12px;
 }
 
 .time-input-wrapper {
-    flex-grow: 1; /* Biarkan setiap wrapper mengambil ruang yang sama */
+    flex-grow: 1;
 }
 
 .time-separator {
     font-size: 1.5rem;
     color: #888;
-    margin-bottom: 8px; /* Sesuaikan agar sejajar dengan input */
+    margin-bottom: 8px;
 }
-
-/* Sedikit modifikasi pada tombol agar bisa memuat ikon */
-#saveAndShareBtn {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background-color: #25D366; /* Warna WhatsApp */
-}
-
-/* Styling untuk Tombol Aktivasi Notifikasi */
-.notification-prompt {
-    margin-top: 20px;
-    text-align: center;
-}
-
-#enableNotificationsBtn {
-    padding: 10px 15px;
-    border: none;
-    border-radius: 8px;
-    font-weight: 500;
-    cursor: pointer;
-    background-color: #6c757d; /* Warna abu-abu sekunder */
-    color: white;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    transition: background-color 0.2s;
-}
-
-#enableNotificationsBtn:hover {
-    background-color: #5a6268;
-}
-
-#enableNotificationsBtn:disabled {
-    background-color: #2ecc71; /* Warna hijau jika sudah aktif */
-    cursor: not-allowed;
-    border-color: #2ecc71;
-}
-
-

@@ -10,7 +10,7 @@
 </head>
 <body>
 
-    <div class="main-wrapper">
+        <div class="main-wrapper">
         <div class="card-backdrop"></div>
         
         <div class="content-stack">
@@ -20,29 +20,49 @@
                 <p><span class="headd">Universitas Islam Negeri Syarif Hidayatullah Jakarta</span></p>
                 <p><span class="headd" style="font-size: 10px;">Made with <i class="fas fa-heart" style="color: #e74c3c;"></i> by Achmad Dzidan</span></p>
             </div>
+
+            <div class="card announcement-container">
+                <h2>Pengumuman 📢</h2>
+                <ul class="announcement" id="announcementList"></ul>
+                <div class="announcement-item-actions">
+                    <button id="addAnnouncementBtn" class="btn-add">Tambah</button>
+                </div>
+            </div>
             
             <div class="card timeline-container">
                 <h2>Linimasa Proyek Terperinci</h2>
-                <ul class="timeline" id="timelineList">
-                </ul>
+                <ul class="timeline" id="timelineList"></ul>
                 <div class="timeline-item-actions">
-                    <button class="btn-add" onclick="openAddModal()">Tambah</button>
+                    <button id="addTimelineBtn" class="btn-add">Tambah</button>
                 </div>
             </div>
 
             <div class="card overview-container">
                 <h2>Gambaran Umum Proyek</h2>
-                <p>Visualisasi ini menunjukkan distribusi total tugas di antara semua divisi selama periode KKN. Gunakan bagan ini untuk mendapatkan pemahaman cepat tentang beban kerja setiap divisi.</p>
+                <p>Visualisasi ini menunjukkan distribusi total tugas di antara semua divisi.</p>
                 <div class="chart-wrapper">
                     <canvas id="myDoughnutChart"></canvas>
                 </div>
             </div>
+
+            <div class="card program-kerja-container">
+                <h2>Program Kerja</h2>
+                <p>Fokus utama dari program kerja KKN VIKRANTAVARNA.</p>
+                <div class="nested-card">
+                    <h3>Pendidikan</h3>
+                    <p>Meningkatkan kualitas pendidikan melalui berbagai kegiatan belajar mengajar dan pelatihan.</p>
+                </div>
+                <div class="nested-card">
+                    <h3>Lingkungan dan Sosial</h3>
+                    <p>Mengadakan kegiatan sosial dan pelestarian lingkungan untuk kesejahteraan masyarakat.</p>
+                </div>
+            </div>
             
             <div class="card progress-container">
-                <h2>Kemajuan Hari Ini</h2>
-                <p>Ini adalah total kemajuan dari semua tugas yang tercatat untuk tanggal yang sedang Anda lihat. Lacak progres harian Anda dengan cepat.</p>
+                <h2>Kemajuan Rentang Tanggal</h2>
+                <p>Ini adalah total kemajuan dari semua tugas yang tercatat untuk rentang tanggal yang Anda lihat.</p>
                 <div class="progress-section">
-                    <label class="progress-label">Total Kemajuan Hari Ini</label>
+                    <label class="progress-label">Total Kemajuan</label>
                     <div class="progress-bar-wrapper">
                         <div class="progress-bar-background">
                             <div id="progressBarFill" class="progress-bar-fill"></div>
@@ -52,467 +72,451 @@
                 </div>
             </div>
 
+            <div class="card general-progress-container">
+                <h2>Kemajuan Progress Umum</h2>
+                <p>Tugas-tugas umum yang tidak masuk ke dalam divisi tertentu.</p>
+                <div id="general-task-card-container">
+                    </div>
+            </div>
+
             <div class="card task-progress-card">
-                <h2>Kemajuan Progress</h2>
-                <p>Pilih bulan dan tanggal untuk melihat tugas yang diuraikan per divisi.</p>
+                <h2>Kemajuan Progress Divisi</h2>
+                <p>Pilih bulan dan rentang tanggal untuk melihat tugas per divisi.</p>
                 <div class="tabs-nav">
                     <button class="tab-link" data-tab="juni">Juni</button>
                     <button class="tab-link" data-tab="juli">Juli</button>
                 </div>
                 <div class="tabs-content">
                     <div id="juni" class="tab-pane">
-                        <div class="sub-tabs-nav">
-                           </div>
-                        <div class="division-cards-container">
-                            </div>
+                        <div class="sub-tabs-nav"></div>
+                        <div class="division-cards-container"></div>
                     </div>
                     <div id="juli" class="tab-pane">
-                        <div class="sub-tabs-nav">
-                             </div>
-                        <div class="division-cards-container">
-                           </div>
+                        <div class="sub-tabs-nav"></div>
+                        <div class="division-cards-container"></div>
                     </div>
-                </div>
-            </div>
-
-            <div id="divisionTaskModal" class="modal-overlay">
-                <div class="modal-content">
-                    <form id="divisionTaskForm" class="modal-form">
-                        <h3 id="divisionTaskModalTitle">Tambah Tugas Baru</h3>
-                        <input type="hidden" id="divisionIdField">
-                        <div>
-                            <label for="taskDescription">Deskripsi Tugas</label>
-                            <input type="text" id="taskDescription" placeholder="Contoh: Memantau progress divisi" required>
-                        </div>
-                        
-                        <div class="time-input-container">
-                            <div class="time-input-wrapper">
-                                <label for="taskStartTime">Waktu Mulai</label>
-                                <input type="time" id="taskStartTime">
-                            </div>
-                            <span class="time-separator">-</span>
-                            <div class="time-input-wrapper">
-                                <label for="taskEndTime">Waktu Berakhir</label>
-                                <input type="time" id="taskEndTime">
-                            </div>
-                        </div>
-
-                        <div class="modal-actions">
-                            <button type="button" class="btn-secondary" id="cancelDivisionTaskBtn">Batal</button>
-                            <button type="button" class="btn-primary" id="saveOnlyBtn">Simpan</button>
-                            <button type="button" class="btn-primary" id="saveAndShareBtn">
-                                <i class="fab fa-whatsapp"></i> Simpan & Bagikan
-                            </button>
-                        </div>
-                    </form>
                 </div>
             </div>
 
             <div class="card headd-container end">
-                <p><span class="headd">Made with <i class="fas fa-heart" style="color: #e74c3c;"></i> by Achmad Dzidan</span></p>
+                <p><span class="headd" style="font-size: 10px;">Made with <i class="fas fa-heart" style="color: #e74c3c;"></i> by Achmad Dzidan</span></p>
             </div>
         </div>
     </div>
 
-    <div id="timelineModal" class="modal">
+    <div id="divisionTaskModal" class="modal-overlay">
         <div class="modal-content">
-            <h3 id="modalTitle">Tambah Item Linimasa</h3>
-            <input type="text" id="modalId" hidden>
-            <input type="date" id="modalDate" required>
-            <input type="text" id="modalTitleInput" placeholder="Judul" required>
-            <textarea id="modalDesc" placeholder="Deskripsi" required></textarea>
-            <button class="btn-save" onclick="saveTimelineItem()">Simpan</button>
-            <button class="btn-cancel" onclick="closeModal()">Batal</button>
+            <form id="divisionTaskForm" class="modal-form">
+                <h3 id="divisionTaskModalTitle">Tambah Tugas Baru</h3>
+                <input type="hidden" id="divisionIdField">
+                <div>
+                    <label for="taskDescription">Deskripsi Tugas</label>
+                    <input type="text" id="taskDescription" placeholder="Contoh: Memantau progress divisi" required>
+                </div>
+                <div class="time-input-container">
+                    <div class="time-input-wrapper">
+                        <label for="taskStartTime">Waktu Mulai</label>
+                        <input type="time" id="taskStartTime">
+                    </div>
+                    <span class="time-separator">-</span>
+                    <div class="time-input-wrapper">
+                        <label for="taskEndTime">Waktu Berakhir</label>
+                        <input type="time" id="taskEndTime">
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary" id="cancelDivisionTaskBtn">Batal</button>
+                    <button type="button" class="btn-primary" id="saveOnlyBtn">Simpan</button>
+                    <button type="button" class="btn-primary" id="saveAndShareBtn">
+                        <i class="fab fa-whatsapp"></i> Simpan & Bagikan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="announcementModal" class="modal-overlay">
+        <div class="modal-content">
+            <h3>Tambah Pengumuman Baru</h3>
+            <label for="announcementDate">Tanggal</label>
+            <input type="date" id="announcementDate" required>
+            <label for="announcementTitleInput">Judul Pengumuman</label>
+            <input type="text" id="announcementTitleInput" placeholder="Judul Pengumuman" required>
+            <label for="announcementDesc">Isi Pengumuman</label>
+            <textarea id="announcementDesc" placeholder="Isi Pengumuman" required rows="4"></textarea>
+            <div class="modal-actions">
+                <button type="button" id="cancelAnnouncementBtn" class="btn-cancel">Batal</button>
+                <button type="button" id="saveAnnouncementBtn" class="btn-save">Simpan</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="timelineModal" class="modal-overlay">
+        <div class="modal-content">
+            <h3>Tambah Item Linimasa</h3>
+            <label for="timelineDate">Tanggal</label>
+            <input type="date" id="timelineDate" required>
+            <label for="timelineTitleInput">Judul</label>
+            <input type="text" id="timelineTitleInput" placeholder="Judul" required>
+            <label for="timelineDesc">Deskripsi</label>
+            <textarea id="timelineDesc" placeholder="Deskripsi" required rows="4"></textarea>
+            <div class="modal-actions">
+                 <button type="button" id="cancelTimelineBtn" class="btn-cancel">Batal</button>
+                 <button type="button" id="saveTimelineBtn" class="btn-save">Simpan</button>
+            </div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
-        import { getFirestore, doc, collection, setDoc, onSnapshot, addDoc, serverTimestamp, query, updateDoc } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
+import { getFirestore, doc, collection, onSnapshot, addDoc, serverTimestamp, query, updateDoc } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyBW_s50tO6zvNl-Jvkm6iQcbRMLebeLRgw",
-            authDomain: "vikrantavarna-ee40e.firebaseapp.com",
-            projectId: "vikrantavarna-ee40e",
-            storageBucket: "vikrantavarna-ee40e.appspot.com",
-            messagingSenderId: "880669712876",
-            appId: "1:880669712876:web:7c873784fde86d4679a0c9",
-            measurementId: "G-SD61TKCVQ3"
-        };
+const firebaseConfig = {
+    apiKey: "AIzaSyBW_s50tO6zvNl-Jvkm6iQcbRMLebeLRgw",
+    authDomain: "vikrantavarna-ee40e.firebaseapp.com",
+    projectId: "vikrantavarna-ee40e",
+    storageBucket: "vikrantavarna-ee40e.appspot.com",
+    messagingSenderId: "880669712876",
+    appId: "1:880669712876:web:7c873784fde86d4679a0c9",
+    measurementId: "G-SD61TKCVQ3"
+};
 
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        const timelineCollectionRef = collection(db, "timeline");
-        const divisionTasksRef = collection(db, "divisionTasks");
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const announcementCollectionRef = collection(db, "announcements");
+const timelineCollectionRef = collection(db, "timeline");
+const divisionTasksRef = collection(db, "divisionTasks");
 
-        // ==========================================================
-        // --- BLOK UTAMA: DOMContentLoaded ---
-        // ==========================================================
-        
-    document.addEventListener('DOMContentLoaded', () => {
-        let myDoughnutChart;
-        const divisionTaskModal = document.getElementById('divisionTaskModal');
-        const divisionTaskForm = document.getElementById('divisionTaskForm');
-        const ctx = document.getElementById('myDoughnutChart');
+document.addEventListener('DOMContentLoaded', () => {
+    let myDoughnutChart;
+    const divisionTaskModal = document.getElementById('divisionTaskModal');
+    const announcementModal = document.getElementById('announcementModal');
+    const timelineModal = document.getElementById('timelineModal');
+    const divisionTaskForm = document.getElementById('divisionTaskForm');
+    const ctx = document.getElementById('myDoughnutChart');
+    
+    // ID untuk tugas umum
+    const GENERAL_TASK_ID = 'general-task';
 
-        // Struktur kartu divisi untuk dirender
-        const divisionCardHTML = (divisionId, divisionName) => `
-            <div class="nested-card" data-division-id="${divisionId}">
-                <h3>${divisionName}</h3>
-                <div class="progress-section"><label class="progress-label">Kemajuan</label><div class="progress-bar-wrapper"><div class="progress-bar-background"><div class="progress-bar-fill"></div></div><span class="progress-percentage">0%</span></div></div>
-                <div class="task-list"></div>
-                <button class="add-task-btn" data-division="${divisionId}"><i class="fas fa-plus"></i> Tambah Tugas</button>
-            </div>`;
+    const divisionCardHTML = (divisionId, divisionName) => `
+        <div class="nested-card" data-division-id="${divisionId}">
+            <h3>${divisionName}</h3>
+            <div class="progress-section"><label class="progress-label">Kemajuan</label><div class="progress-bar-wrapper"><div class="progress-bar-background"><div class="progress-bar-fill"></div></div><span class="progress-percentage">0%</span></div></div>
+            <div class="task-list"></div>
+            <button class="add-task-btn" data-division="${divisionId}"><i class="fas fa-plus"></i> Tambah Tugas</button>
+        </div>`;
 
-        const divisions = [
-            { id: 'ketua-wakil', name: 'Ketua dan Wakil' }, { id: 'sekertaris', name: 'Sekertaris' },
-            { id: 'bendahara', name: 'Bendahara' }, { id: 'acara', name: 'Acara' },
-            { id: 'logistik', name: 'Logistik' }, { id: 'humas', name: 'Humas' },
-            { id: 'konsumsi', name: 'Konsumsi' }, { id: 'pdd', name: 'PDD' }
-        ];
+    const divisions = [
+        { id: 'ketua-wakil', name: 'Ketua dan Wakil' }, { id: 'sekertaris', name: 'Sekertaris' },
+        { id: 'bendahara', name: 'Bendahara' }, { id: 'acara', name: 'Acara' },
+        { id: 'logistik', name: 'Logistik' }, { id: 'humas', name: 'Humas' },
+        { id: 'konsumsi', name: 'Konsumsi' }, { id: 'pdd', name: 'PDD' }
+    ];
 
-        // Inisialisasi kartu divisi di kedua tab
-        const juniCardsContainer = document.querySelector('#juni .division-cards-container');
-        const juliCardsContainer = document.querySelector('#juli .division-cards-container');
-        
-        let allCardsHTML = '';
-        divisions.forEach(div => allCardsHTML += divisionCardHTML(div.id, div.name));
-        juniCardsContainer.innerHTML = allCardsHTML;
-        juliCardsContainer.innerHTML = allCardsHTML;
+    const juniCardsContainer = document.querySelector('#juni .division-cards-container');
+    const juliCardsContainer = document.querySelector('#juli .division-cards-container');
+    
+    let allCardsHTML = '';
+    divisions.forEach(div => allCardsHTML += divisionCardHTML(div.id, div.name));
+    juniCardsContainer.innerHTML = allCardsHTML;
+    juliCardsContainer.innerHTML = allCardsHTML;
+
+    // Render kartu tugas umum
+    const generalTaskContainer = document.getElementById('general-task-card-container');
+    generalTaskContainer.innerHTML = divisionCardHTML(GENERAL_TASK_ID, 'To Do List');
 
 
-        if (ctx) {
-            const chartConfig = {
-                type: 'doughnut',
-                data: {
-                    labels: divisions.map(d => d.name),
-                    datasets: [{
-                        label: 'Jumlah Tugas',
-                        data: Array(divisions.length).fill(0),
-                        backgroundColor: ['#3498db', '#9b59b6', '#e67e22', '#e74c3c', '#f1c40f', '#1abc9c', '#2ecc71', '#7f8c8d'],
-                        borderColor: '#f0f2f5', borderWidth: 4, hoverOffset: 8
-                    }]
-                },
-                options: {
-                    responsive: true, maintainAspectRatio: false, cutout: '60%',
-                    plugins: {
-                        legend: { position: 'bottom', labels: { padding: 20, boxWidth: 12, font: { family: "'Roboto', sans-serif" }}},
-                        tooltip: { callbacks: { label: (c) => `${c.label}: ${c.parsed} Tugas` }}
-                    }
+    if (ctx) {
+        myDoughnutChart = new Chart(ctx, {
+            type: 'doughnut', data: {
+                labels: divisions.map(d => d.name),
+                datasets: [{
+                    label: 'Jumlah Tugas', data: Array(divisions.length).fill(0),
+                    backgroundColor: ['#3498db', '#9b59b6', '#e67e22', '#e74c3c', '#f1c40f', '#1abc9c', '#2ecc71', '#7f8c8d'],
+                    borderColor: '#f0f2f5', borderWidth: 4, hoverOffset: 8
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false, cutout: '60%',
+                plugins: {
+                    legend: { position: 'bottom', labels: { padding: 20, boxWidth: 12, font: { family: "'Roboto', sans-serif" }}},
+                    tooltip: { callbacks: { label: (c) => `${c.label}: ${c.parsed} Tugas` }}
                 }
-            };
-            myDoughnutChart = new Chart(ctx, chartConfig);
+            }
+        });
+    }
+    
+    const today = new Date();
+    let activeDate = today.getDate();
+    let activeMonth = today.getMonth() + 1;
+    let allTasksCache = [];
+
+    const dateRanges = {
+        juni: [{label: '1 - 7', start: 1, end: 7}, {label: '8 - 14', start: 8, end: 14}, {label: '15 - 21', start: 15, end: 21}, {label: '22 - 30', start: 22, end: 30}],
+        juli: [{label: '1 - 7', start: 1, end: 7}, {label: '8 - 14', start: 8, end: 14}, {label: '15 - 21', start: 15, end: 21}, {label: '22 - 31', start: 22, end: 31}]
+    };
+
+    const createSubTabButtons = (monthName) => {
+        const navContainer = document.querySelector(`#${monthName} .sub-tabs-nav`);
+        navContainer.innerHTML = '';
+        dateRanges[monthName].forEach(range => {
+            const button = document.createElement('button');
+            button.className = 'sub-tab-link';
+            button.dataset.start = range.start;
+            button.dataset.end = range.end;
+            button.textContent = range.label;
+            navContainer.appendChild(button);
+        });
+    };
+
+    createSubTabButtons('juni');
+    createSubTabButtons('juli');
+    
+    const activateCurrentDateTabs = () => {
+        const monthName = activeMonth === 6 ? 'juni' : 'juli';
+        document.querySelectorAll('.tab-link').forEach(tab => tab.classList.toggle('active', tab.dataset.tab === monthName));
+        document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.toggle('active', pane.id === monthName));
+        const activeMonthPane = document.querySelector('.tab-pane.active');
+        if (activeMonthPane) {
+            let activeRangeTab;
+            activeMonthPane.querySelectorAll('.sub-tab-link').forEach(tab => {
+                const isActive = activeDate >= tab.dataset.start && activeDate <= tab.dataset.end;
+                tab.classList.toggle('active', isActive);
+                if (isActive) activeRangeTab = tab;
+            });
+            activeRangeTab?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
         }
-        
-        const today = new Date();
-        // Untuk pengujian, Anda bisa mengganti `today` dengan tanggal lain
-        // const today = new Date('2025-07-03T10:00:00'); 
-        let activeDate = today.getDate();
-        let activeMonth = today.getMonth() + 1; // 1-12
-        let activeDateRange = '';
-        let allTasksCache = [];
+    };
+    
+    const updateProgressBar = (container) => {
+        const allCheckboxes = container.querySelectorAll('.task-checkbox');
+        const checkedCheckboxes = container.querySelectorAll('.task-checkbox:checked');
+        const percentage = allCheckboxes.length > 0 ? (checkedCheckboxes.length / allCheckboxes.length) * 100 : 0;
+        container.querySelector('.progress-bar-fill').style.width = `${percentage}%`;
+        container.querySelector('.progress-percentage').textContent = `${Math.round(percentage)}%`;
+    };
 
-        const dateRanges = {
-            juni: [{label: '1 - 7', start: 1, end: 7}, {label: '8 - 14', start: 8, end: 14}, {label: '15 - 21', start: 15, end: 21}, {label: '22 - 30', start: 22, end: 30}],
-            juli: [{label: '1 - 7', start: 1, end: 7}, {label: '8 - 14', start: 8, end: 14}, {label: '15 - 21', start: 15, end: 21}, {label: '22 - 31', start: 22, end: 31}]
-        };
+    const updateTotalProgress = () => {
+        const activeCardsContainer = document.querySelector('.tab-pane.active .division-cards-container');
+        if (!activeCardsContainer) return;
+        const allTasksForRange = activeCardsContainer.querySelectorAll('.task-checkbox');
+        const checkedTasksForRange = activeCardsContainer.querySelectorAll('.task-checkbox:checked');
+        const totalPercentage = allTasksForRange.length > 0 ? (checkedTasksForRange.length / allTasksForRange.length) * 100 : 0;
+        document.getElementById('progressBarFill').style.width = `${totalPercentage}%`;
+        document.getElementById('progressPercentage').textContent = `${Math.round(totalPercentage)}%`;
+    };
 
-        // Fungsi untuk membuat tombol sub-tab
-        const createSubTabButtons = (monthName) => {
-            const navContainer = document.querySelector(`#${monthName} .sub-tabs-nav`);
-            navContainer.innerHTML = '';
-            dateRanges[monthName].forEach(range => {
-                const button = document.createElement('button');
-                button.className = 'sub-tab-link';
-                button.dataset.range = range.label;
-                button.dataset.start = range.start;
-                button.dataset.end = range.end;
-                button.textContent = range.label;
-                navContainer.appendChild(button);
-            });
-        };
-
-        createSubTabButtons('juni');
-        createSubTabButtons('juli');
-        
-        const activateCurrentDateTabs = () => {
-            const monthName = activeMonth === 6 ? 'juni' : 'juli';
-            
-            document.querySelectorAll('.tab-link').forEach(tab => tab.classList.toggle('active', tab.dataset.tab === monthName));
-            document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.toggle('active', pane.id === monthName));
-
-            const activeMonthPane = document.querySelector('.tab-pane.active');
-            if (activeMonthPane) {
-                let activeRangeTab;
-                activeMonthPane.querySelectorAll('.sub-tab-link').forEach(tab => {
-                    const start = parseInt(tab.dataset.start, 10);
-                    const end = parseInt(tab.dataset.end, 10);
-                    const isActive = activeDate >= start && activeDate <= end;
-                    tab.classList.toggle('active', isActive);
-                    if (isActive) {
-                        activeRangeTab = tab;
-                        activeDateRange = tab.dataset.range;
-                    }
-                });
-                if (activeRangeTab) {
-                    activeRangeTab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-                }
-            }
-        };
-        
-        const showDivisionTaskModal = (show = true) => divisionTaskModal.classList.toggle('visible', show);
-        
-        const updateProgressBar = (container) => {
-            const allCheckboxes = container.querySelectorAll('.task-checkbox');
-            const checkedCheckboxes = container.querySelectorAll('.task-checkbox:checked');
-            const percentage = allCheckboxes.length > 0 ? (checkedCheckboxes.length / allCheckboxes.length) * 100 : 0;
-            const bar = container.querySelector('.progress-bar-fill');
-            const text = container.querySelector('.progress-percentage');
-            if (bar) bar.style.width = `${percentage}%`;
-            if (text) text.textContent = `${Math.round(percentage)}%`;
-        };
-
-        const updateTotalProgress = () => {
-            const activeCardsContainer = document.querySelector('.tab-pane.active .division-cards-container');
-            if (!activeCardsContainer) return;
-            const allTasksForRange = activeCardsContainer.querySelectorAll('.task-checkbox');
-            const checkedTasksForRange = activeCardsContainer.querySelectorAll('.task-checkbox:checked');
-            const totalPercentage = allTasksForRange.length > 0 ? (checkedTasksForRange.length / allTasksForRange.length) * 100 : 0;
-            
-            const bar = document.getElementById('progressBarFill');
-            const text = document.getElementById('progressPercentage');
-            if (bar) bar.style.width = `${totalPercentage}%`;
-            if (text) text.textContent = `${Math.round(totalPercentage)}%`;
-        };
-
-        const updateDoughnutChart = () => {
-            if (!myDoughnutChart) return;
-
-            const activeRangeButton = document.querySelector('.sub-tab-link.active');
-            if (!activeRangeButton) return;
-            const start = parseInt(activeRangeButton.dataset.start);
-            const end = parseInt(activeRangeButton.dataset.end);
-
-            const tasksForRange = allTasksCache.filter(task => {
-                 const taskDate = new Date(task.taskDate + 'T00:00:00');
-                 const date = taskDate.getDate();
-                 const month = taskDate.getMonth() + 1;
-                 return month === activeMonth && date >= start && date <= end;
-            });
-
-            const taskCounts = divisions.reduce((acc, div) => {
-                acc[div.id] = tasksForRange.filter(t => t.divisionId === div.id).length;
-                return acc;
-            }, {});
-            
-            myDoughnutChart.data.datasets[0].data = divisions.map(div => taskCounts[div.id] || 0);
-            myDoughnutChart.update();
-        };
-
-        const loadTimelineItems = () => onSnapshot(timelineCollectionRef, (snapshot) => {
-            const list = document.getElementById('timelineList');
-            if(!list) return;
-            const items = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-            items.sort((a, b) => new Date(a.date) - new Date(b.date));
-            list.innerHTML = items.map(item => `
-                <li class="timeline-item" data-id="${item.id}">
-                    <div class="item-date">${new Date(item.date + 'T00:00:00').toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric'})}</div>
-                    <h3 class="item-title">${item.title}</h3>
-                    <p class="item-desc">${item.description.replace(/\n/g, '<br>')}</p>
-                </li>`
-            ).join('');
+    const updateDoughnutChart = () => {
+        if (!myDoughnutChart) return;
+        const activeRangeButton = document.querySelector('.sub-tab-link.active');
+        if (!activeRangeButton) return;
+        const start = parseInt(activeRangeButton.dataset.start);
+        const end = parseInt(activeRangeButton.dataset.end);
+        const tasksForRange = allTasksCache.filter(task => {
+             const taskDate = new Date(task.taskDate + 'T00:00:00');
+             return taskDate.getMonth() + 1 === activeMonth && taskDate.getDate() >= start && taskDate.getDate() <= end;
         });
+        const taskCounts = divisions.reduce((acc, div) => {
+            acc[div.id] = tasksForRange.filter(t => t.divisionId === div.id).length;
+            return acc;
+        }, {});
+        myDoughnutChart.data.datasets[0].data = divisions.map(div => taskCounts[div.id] || 0);
+        myDoughnutChart.update();
+    };
 
-        const renderAllDivisionTasks = () => {
-            const activePane = document.querySelector('.tab-pane.active');
-            if (!activePane) return;
-            const activeRangeButton = activePane.querySelector('.sub-tab-link.active');
-            if (!activeRangeButton) return;
+    const renderList = (elementId, items, emptyMsg, sortFn) => {
+        const list = document.getElementById(elementId);
+        if(!list) return;
+        items.sort(sortFn);
+        const itemHTML = items.map(item => `
+            <li class="${elementId === 'announcementList' ? 'announcement-item' : 'timeline-item'}" data-id="${item.id}">
+                <div class="item-date">${new Date(item.date + 'T00:00:00').toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric'})}</div>
+                <h3 class="item-title">${item.title}</h3>
+                <p class="item-desc">${item.description.replace(/\n/g, '<br>')}</p>
+            </li>`
+        ).join('');
+        list.innerHTML = itemHTML || `<p class="no-task-msg">${emptyMsg}</p>`;
+    };
+    
+    const loadAnnouncements = () => onSnapshot(announcementCollectionRef, (snap) => renderList('announcementList', snap.docs.map(d => ({id:d.id,...d.data()})), 'Belum ada pengumuman.', (a,b) => new Date(b.date) - new Date(a.date)));
+    const loadTimelineItems = () => onSnapshot(timelineCollectionRef, (snap) => renderList('timelineList', snap.docs.map(d => ({id:d.id,...d.data()})), 'Belum ada linimasa.', (a,b) => new Date(a.date) - new Date(b.date)));
 
-            const start = parseInt(activeRangeButton.dataset.start);
-            const end = parseInt(activeRangeButton.dataset.end);
+    const renderAllTasks = () => {
+        const activePane = document.querySelector('.tab-pane.active');
+        if (!activePane) return;
+        const activeRangeButton = activePane.querySelector('.sub-tab-link.active');
+        if (!activeRangeButton) {
+            document.querySelectorAll('.task-list').forEach(list => list.innerHTML = `<p class="no-task-msg">Pilih rentang tanggal.</p>`);
+            return;
+        }
 
-            const tasksForRange = allTasksCache.filter(task => {
-                 const taskDate = new Date(task.taskDate + 'T00:00:00');
-                 const date = taskDate.getDate();
-                 const month = taskDate.getMonth() + 1;
-                 return month === activeMonth && date >= start && date <= end;
-            });
-
-            const tasksByDivision = tasksForRange.reduce((acc, task) => {
-                (acc[task.divisionId] = acc[task.divisionId] || []).push(task);
-                return acc;
-            }, {});
-
-            activePane.querySelectorAll('.nested-card[data-division-id]').forEach(card => {
-                const divisionId = card.dataset.divisionId;
-                const tasksForDivision = tasksByDivision[divisionId] || [];
-                const taskList = card.querySelector('.task-list');
-                
-                if (tasksForDivision.length === 0) {
-                    taskList.innerHTML = `<p class="no-task-msg">Tidak ada tugas untuk rentang tanggal ini.</p>`;
-                } else {
-                    tasksForDivision.sort((a, b) => a.taskDate.localeCompare(b.taskDate) || (a.startTime || "00:00").localeCompare(b.startTime || "00:00"));
-                    taskList.innerHTML = tasksForDivision.map(task => {
-                         const taskDay = new Date(task.taskDate + 'T00:00:00').toLocaleDateString('id-ID', { weekday: 'long' });
-                         return `
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="${task.id}" class="task-checkbox" data-doc-id="${task.id}" ${task.isCompleted ? 'checked' : ''}>
-                                <label for="${task.id}">
-                                    <span>${task.description}</span>
-                                    <span class="task-time">(${taskDay}) ${task.startTime || ''} - ${task.endTime || ''}</span>
-                                </label>
-                            </div>`;
-                    }).join('');
-                }
-                updateProgressBar(card);
-            });
-            updateTotalProgress();
-            updateDoughnutChart();
-        };
-
-        const showToast = (message, type = 'success') => {
-             const toast = document.createElement('div');
-             toast.className = `toast ${type} show`;
-             toast.textContent = message;
-             document.body.appendChild(toast);
-             setTimeout(() => {
-                 toast.classList.remove('show');
-                 setTimeout(() => toast.remove(), 500);
-             }, 3000);
-        };
-
-        window.openAddModal = () => document.getElementById('timelineModal').style.display = 'block';
-        window.closeModal = () => document.getElementById('timelineModal').style.display = 'none';
-        window.onclick = (event) => { if (event.target == document.getElementById('timelineModal')) closeModal(); };
-
-        window.saveTimelineItem = async () => {
-            const data = {
-                date: document.getElementById('modalDate').value,
-                title: document.getElementById('modalTitleInput').value,
-                description: document.getElementById('modalDesc').value,
-                createdAt: serverTimestamp()
-            };
-            if (!data.date || !data.title || !data.description) return alert("Semua bidang harus diisi.");
-            try {
-                await addDoc(timelineCollectionRef, data);
-                alert("Item berhasil disimpan!");
-                closeModal();
-            } catch (error) {
-                console.error("Gagal menyimpan linimasa:", error);
-                alert("Terjadi kesalahan saat menyimpan.");
-            }
-        };
-
-        const handleSaveTask = async (shouldShare = false) => {
-            const description = document.getElementById('taskDescription').value;
-            const divisionId = document.getElementById('divisionIdField').value;
-            if (!description) return showToast("Deskripsi tugas tidak boleh kosong.", 'error');
-
-            // Untuk menambahkan tugas baru, secara default kita tambahkan di tanggal hari ini
-            const selectedDateString = today.toISOString().split('T')[0]; // Format YYYY-MM-DD
-
-            const data = {
-                divisionId,
-                description,
-                taskDate: selectedDateString,
-                startTime: document.getElementById('taskStartTime').value || "",
-                endTime: document.getElementById('taskEndTime').value || "",
-                isCompleted: false,
-                createdAt: serverTimestamp(),
-            };
-            
-            try {
-                await addDoc(divisionTasksRef, data);
-                showDivisionTaskModal(false);
-                showToast(`Tugas untuk ${divisionId} berhasil disimpan!`);
-
-                if (shouldShare) {
-                    const pesan = `🔔 *Notifikasi Tugas Baru* 🔔\n\nHalo tim! Ada tugas baru untuk divisi *${divisionId.replace('-', ' ')}*:\n\n📝 *Tugas*: ${data.description}\n📆 *Hari*: ${today.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long' })}\n⏰ *Waktu*: ${data.startTime || 'N/A'} - ${data.endTime || 'N/A'}\n\nMohon perhatiannya. Terima kasih dan semangat! ✨`;
-                    if (navigator.share) {
-                        await navigator.share({ title: 'Notifikasi Tugas Baru KKN', text: pesan });
-                    } else {
-                        navigator.clipboard.writeText(pesan);
-                        showToast("Pesan disalin! Silakan tempel di grup WhatsApp.");
-                    }
-                }
-            } catch (error) {
-                showToast("Gagal menyimpan tugas.", 'error');
-                console.error("Error saving task: ", error);
-            }
-        };
+        const start = parseInt(activeRangeButton.dataset.start);
+        const end = parseInt(activeRangeButton.dataset.end);
         
-        document.getElementById('saveOnlyBtn').addEventListener('click', () => handleSaveTask(false));
-        document.getElementById('saveAndShareBtn').addEventListener('click', () => handleSaveTask(true));
-        document.getElementById('cancelDivisionTaskBtn').addEventListener('click', () => showDivisionTaskModal(false));
-
-        // Event Delegation untuk seluruh konten
-        document.querySelector('.tabs-content').addEventListener('click', (e) => {
-            // Tombol tambah tugas
-            const addTaskBtn = e.target.closest('.add-task-btn');
-            if (addTaskBtn) {
-                const divisionId = addTaskBtn.dataset.division;
-                divisionTaskForm.reset();
-                document.getElementById('divisionIdField').value = divisionId;
-                document.getElementById('divisionTaskModalTitle').textContent = `Tambah Tugas untuk ${divisions.find(d=>d.id === divisionId).name}`;
-                showDivisionTaskModal();
+        const tasksByDivision = allTasksCache.reduce((acc, task) => {
+            const taskDate = new Date(task.taskDate + 'T00:00:00');
+            if (taskDate.getMonth() + 1 === activeMonth && taskDate.getDate() >= start && taskDate.getDate() <= end) {
+                 (acc[task.divisionId] = acc[task.divisionId] || []).push(task);
             }
+            return acc;
+        }, {});
 
-            // Tombol sub-tab rentang tanggal
-            const subTabLink = e.target.closest('.sub-tab-link');
-            if (subTabLink) {
-                const parentNav = subTabLink.parentElement;
-                parentNav.querySelector('.active')?.classList.remove('active');
-                subTabLink.classList.add('active');
-                activeDateRange = subTabLink.dataset.range;
-                renderAllDivisionTasks();
-            }
+        // Render tugas divisi
+        activePane.querySelectorAll('.nested-card[data-division-id]').forEach(card => {
+            const divisionId = card.dataset.divisionId;
+            const tasksForDivision = tasksByDivision[divisionId] || [];
+            tasksForDivision.sort((a, b) => a.taskDate.localeCompare(b.taskDate) || (a.startTime || "00:00").localeCompare(b.startTime || "00:00"));
+            card.querySelector('.task-list').innerHTML = tasksForDivision.map(task => `
+                <div class="checkbox-item">
+                    <input type="checkbox" id="${task.id}" class="task-checkbox" data-doc-id="${task.id}" ${task.isCompleted ? 'checked' : ''}>
+                    <label for="${task.id}">
+                        <span>${task.description}</span>
+                        <span class="task-time">(${new Date(task.taskDate + 'T00:00:00').toLocaleDateString('id-ID', { weekday: 'short' })}) ${task.startTime || ''}</span>
+                    </label>
+                </div>`
+            ).join('') || `<p class="no-task-msg">Tidak ada tugas.</p>`;
+            updateProgressBar(card);
         });
         
-        document.querySelector('.tabs-content').addEventListener('change', async (e) => {
-             // Checkbox tugas
-             if (e.target.classList.contains('task-checkbox')) {
-                const docId = e.target.dataset.docId;
-                const isCompleted = e.target.checked;
-                try {
-                    await updateDoc(doc(db, "divisionTasks", docId), { isCompleted });
-                    // UI akan diperbarui oleh snapshot listener
-                } catch(error) {
-                    console.error("Error updating task status:", error);
-                    showToast("Gagal memperbarui status tugas.", "error");
-                }
-             }
-        });
+        // Render tugas umum
+        const generalTasks = tasksByDivision[GENERAL_TASK_ID] || [];
+        const generalTaskCard = document.querySelector(`.nested-card[data-division-id="${GENERAL_TASK_ID}"]`);
+        if(generalTaskCard) {
+            generalTasks.sort((a, b) => a.taskDate.localeCompare(b.taskDate) || (a.startTime || "00:00").localeCompare(b.startTime || "00:00"));
+            generalTaskCard.querySelector('.task-list').innerHTML = generalTasks.map(task => `
+                <div class="checkbox-item">
+                    <input type="checkbox" id="${task.id}" class="task-checkbox" data-doc-id="${task.id}" ${task.isCompleted ? 'checked' : ''}>
+                    <label for="${task.id}">
+                        <span>${task.description}</span>
+                        <span class="task-time">(${new Date(task.taskDate + 'T00:00:00').toLocaleDateString('id-ID', { weekday: 'short' })}) ${task.startTime || ''}</span>
+                    </label>
+                </div>`
+            ).join('') || `<p class="no-task-msg">Tidak ada tugas umum.</p>`;
+            updateProgressBar(generalTaskCard);
+        }
 
-        // Event listener untuk tab bulan utama
-        document.querySelectorAll('.tab-link').forEach(link => {
-            link.addEventListener('click', (e) => {
-                const tabId = e.currentTarget.dataset.tab;
-                activeMonth = tabId === 'juni' ? 6 : 7;
-                
-                // Jika pindah bulan, pilih rentang tanggal pertama secara default
-                const isTodayInThisMonth = activeMonth === (today.getMonth() + 1);
-                if (isTodayInThisMonth) {
-                    activeDate = today.getDate();
-                } else {
-                    activeDate = 1; // Jika bukan bulan ini, aktifkan tanggal 1
-                }
-                
-                activateCurrentDateTabs();
-                renderAllDivisionTasks();
+        updateTotalProgress();
+        updateDoughnutChart();
+    };
+
+    const showModal = (modalElement) => modalElement.classList.add('visible');
+    const closeModal = (modalElement) => modalElement.classList.remove('visible');
+    
+    const saveAnnouncement = async () => {
+        const data = {
+            date: document.getElementById('announcementDate').value,
+            title: document.getElementById('announcementTitleInput').value,
+            description: document.getElementById('announcementDesc').value,
+        };
+        if (!data.date || !data.title || !data.description) return alert("Semua bidang harus diisi.");
+        await addDoc(announcementCollectionRef, { ...data, createdAt: serverTimestamp() });
+        closeModal(announcementModal);
+    };
+
+    const saveTimelineItem = async () => {
+        const data = {
+            date: document.getElementById('timelineDate').value,
+            title: document.getElementById('timelineTitleInput').value,
+            description: document.getElementById('timelineDesc').value,
+        };
+        if (!data.date || !data.title || !data.description) return alert("Semua bidang harus diisi.");
+        await addDoc(timelineCollectionRef, { ...data, createdAt: serverTimestamp() });
+        closeModal(timelineModal);
+    };
+
+    const handleSaveTask = async (shouldShare = false) => {
+        const description = document.getElementById('taskDescription').value;
+        const divisionId = document.getElementById('divisionIdField').value;
+        if (!description) return alert("Deskripsi tidak boleh kosong.");
+        const data = {
+            divisionId, description,
+            taskDate: today.toISOString().split('T')[0],
+            startTime: document.getElementById('taskStartTime').value || "",
+            endTime: document.getElementById('taskEndTime').value || "",
+            isCompleted: false, createdAt: serverTimestamp(),
+        };
+        await addDoc(divisionTasksRef, data);
+        closeModal(divisionTaskModal);
+        alert(`Tugas berhasil disimpan!`);
+
+        if (shouldShare) {
+            const pesan = `🔔 *Notifikasi Tugas Baru* 🔔\n\nHalo tim! Ada tugas baru untuk divisi *${divisionId.replace('-', ' ')}*:\n\n📝 *Tugas*: ${data.description}\n📆 *Hari*: ${today.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long' })}\n⏰ *Waktu*: ${data.startTime || 'N/A'} - ${data.endTime || 'N/A'}\n\nSemangat! ✨`;
+            navigator.share({ title: 'Tugas Baru KKN', text: pesan }).catch(() => {
+                navigator.clipboard.writeText(pesan);
+                alert("Pesan disalin ke clipboard!");
             });
-        });
+        }
+    };
+    
+    // --- EVENT LISTENERS ---
+    document.getElementById('addAnnouncementBtn').addEventListener('click', () => showModal(announcementModal));
+    document.getElementById('cancelAnnouncementBtn').addEventListener('click', () => closeModal(announcementModal));
+    document.getElementById('saveAnnouncementBtn').addEventListener('click', saveAnnouncement);
 
-        // Inisialisasi awal
-        onSnapshot(query(divisionTasksRef), (snapshot) => {
-            allTasksCache = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-            activateCurrentDateTabs(); // Aktifkan tab berdasarkan tanggal hari ini
-            renderAllDivisionTasks();  // Render konten berdasarkan tab yang aktif
-            loadTimelineItems();
+    document.getElementById('addTimelineBtn').addEventListener('click', () => showModal(timelineModal));
+    document.getElementById('cancelTimelineBtn').addEventListener('click', () => closeModal(timelineModal));
+    document.getElementById('saveTimelineBtn').addEventListener('click', saveTimelineItem);
+
+    document.getElementById('saveOnlyBtn').addEventListener('click', () => handleSaveTask(false));
+    document.getElementById('saveAndShareBtn').addEventListener('click', () => handleSaveTask(true));
+    document.getElementById('cancelDivisionTaskBtn').addEventListener('click', () => closeModal(divisionTaskModal));
+
+    document.querySelector('.tabs-content').addEventListener('click', (e) => {
+        if (e.target.closest('.add-task-btn')) {
+            const divisionId = e.target.closest('.add-task-btn').dataset.division;
+            divisionTaskForm.reset();
+            document.getElementById('divisionIdField').value = divisionId;
+            document.getElementById('divisionTaskModalTitle').textContent = `Tambah Tugas: ${divisions.find(d=>d.id === divisionId)?.name || 'To Do List'}`;
+            showModal(divisionTaskModal);
+        }
+        if (e.target.closest('.sub-tab-link')) {
+            e.target.parentElement.querySelector('.active')?.classList.remove('active');
+            e.target.classList.add('active');
+            renderAllTasks();
+        }
+    });
+    
+    document.querySelector('.general-progress-container').addEventListener('click', (e) => {
+        if (e.target.closest('.add-task-btn')) {
+            const divisionId = e.target.closest('.add-task-btn').dataset.division;
+            divisionTaskForm.reset();
+            document.getElementById('divisionIdField').value = divisionId;
+            document.getElementById('divisionTaskModalTitle').textContent = `Tambah Tugas: To Do List`;
+            showModal(divisionTaskModal);
+        }
+    });
+
+    document.body.addEventListener('change', async (e) => {
+         if (e.target.classList.contains('task-checkbox')) {
+            await updateDoc(doc(db, "divisionTasks", e.target.dataset.docId), { isCompleted: e.target.checked });
+         }
+    });
+
+    document.querySelectorAll('.tab-link').forEach(link => {
+        link.addEventListener('click', (e) => {
+            activeMonth = e.currentTarget.dataset.tab === 'juni' ? 6 : 7;
+            activeDate = activeMonth === (today.getMonth() + 1) ? today.getDate() : 1;
+            activateCurrentDateTabs();
+            renderAllTasks();
         });
     });
+
+    [announcementModal, timelineModal, divisionTaskModal].forEach(modal => {
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal(modal);
+        });
+    });
+
+    onSnapshot(query(divisionTasksRef), (snapshot) => {
+        allTasksCache = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        activateCurrentDateTabs();
+        renderAllTasks();
+    });
+    loadAnnouncements();
+    loadTimelineItems();
+});
     </script>
 </body>
 </html>
