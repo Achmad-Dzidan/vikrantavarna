@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Linimasa & Tim Proyek</title>
     <link rel="icon" type="image/x-icon" href="/src/logo.jpg">
-    <!-- Pastikan path ke file CSS Anda benar -->
     <link rel="stylesheet" href="style/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
@@ -15,7 +14,6 @@
         <div class="card-backdrop"></div>
         
         <div class="content-stack">
-            <!-- Kartu Judul -->
             <div class="card headd-container">
                 <p>Linimasa Kuliah Kerja Nyata</p>
                 <p>VIKRANTAVARNA</p>
@@ -23,18 +21,15 @@
                 <p><span class="headd" style="font-size: 10px;">Made with <i class="fas fa-heart" style="color: #e74c3c;"></i> by Achmad Dzidan</span></p>
             </div>
             
-            <!-- Kartu Linimasa Proyek -->
             <div class="card timeline-container">
                 <h2>Linimasa Proyek Terperinci</h2>
                 <ul class="timeline" id="timelineList">
-                    <!-- Konten diisi secara dinamis dari Firebase -->
                 </ul>
-                 <div class="timeline-item-actions">
+                <div class="timeline-item-actions">
                     <button class="btn-add" onclick="openAddModal()">Tambah</button>
                 </div>
             </div>
 
-            <!-- Kartu Gambaran Umum Proyek (Chart) -->
             <div class="card overview-container">
                 <h2>Gambaran Umum Proyek</h2>
                 <p>Visualisasi ini menunjukkan distribusi total tugas di antara semua divisi selama periode KKN. Gunakan bagan ini untuk mendapatkan pemahaman cepat tentang beban kerja setiap divisi.</p>
@@ -43,22 +38,6 @@
                 </div>
             </div>
             
-            <!-- Kartu Kemajuan Total -->
-            <!-- <div class="card progress-container">
-                <h2>Kemajuan Bulan Ini</h2>
-                <p>Ini adalah total kemajuan dari semua tugas yang tercatat untuk bulan yang sedang Anda lihat. Lacak progres keseluruhan Anda dengan cepat.</p>
-                <div class="progress-section">
-                    <label class="progress-label">Total Kemajuan Bulan Ini</label>
-                    <div class="progress-bar-wrapper">
-                        <div class="progress-bar-background">
-                            <div id="progressBarFill" class="progress-bar-fill"></div>
-                        </div>
-                        <span id="progressPercentage" class="progress-percentage">0%</span>
-                    </div>
-                </div>
-            </div> -->
-
-            <!-- (MODIFIKASI) Kartu Kemajuan Total menjadi Kemajuan Hari Ini -->
             <div class="card progress-container">
                 <h2>Kemajuan Hari Ini</h2>
                 <p>Ini adalah total kemajuan dari semua tugas yang tercatat untuk tanggal yang sedang Anda lihat. Lacak progres harian Anda dengan cepat.</p>
@@ -70,15 +49,9 @@
                         </div>
                         <span id="progressPercentage" class="progress-percentage">0%</span>
                     </div>
-                    <!-- <div class="notification-prompt">
-                        <button id="enableNotificationsBtn" class="btn-secondary">
-                            <i class="fas fa-bell"></i> Aktifkan Notifikasi Tugas
-                        </button>
-                    </div> -->
                 </div>
             </div>
 
-            <!-- Kartu Progress Detail per Divisi -->
             <div class="card task-progress-card">
                 <h2>Kemajuan Progress</h2>
                 <p>Pilih bulan dan tanggal untuk melihat tugas yang diuraikan per divisi.</p>
@@ -89,76 +62,19 @@
                 <div class="tabs-content">
                     <div id="juni" class="tab-pane">
                         <div class="sub-tabs-nav">
-                            <script>
-                                const nav = document.currentScript.parentElement;
-                                for (let i = 1; i <= 30; i++) {
-                                    const button = document.createElement('button');
-                                    button.className = 'sub-tab-link';
-                                    button.dataset.date = i;
-                                    button.textContent = i;
-                                    nav.appendChild(button);
-                                }
-                            </script>
-                        </div>
+                           </div>
                         <div class="division-cards-container">
-                            <!-- Template Kartu Divisi Dinamis -->
-                            <div class="nested-card" data-division-id="ketua-wakil">
-                                <h3>Ketua dan Wakil</h3>
-                                <div class="progress-section"><label class="progress-label">Kemajuan</label><div class="progress-bar-wrapper"><div class="progress-bar-background"><div class="progress-bar-fill"></div></div><span class="progress-percentage">0%</span></div></div>
-                                <div class="task-list"></div>
-                                <button class="add-task-btn" data-division="ketua-wakil"><i class="fas fa-plus"></i> Tambah Tugas</button>
                             </div>
-                            <div class="nested-card" data-division-id="sekertaris">
-                                <h3>Sekertaris</h3>
-                                <div class="progress-section"><label class="progress-label">Kemajuan</label><div class="progress-bar-wrapper"><div class="progress-bar-background"><div class="progress-bar-fill"></div></div><span class="progress-percentage">0%</span></div></div>
-                                <div class="task-list"></div>
-                                <button class="add-task-btn" data-division="sekertaris"><i class="fas fa-plus"></i> Tambah Tugas</button>
-                            </div>
-                            <div class="nested-card" data-division-id="bendahara">
-                                <h3>Bendahara</h3>
-                                <div class="progress-section"><label class="progress-label">Kemajuan</label><div class="progress-bar-wrapper"><div class="progress-bar-background"><div class="progress-bar-fill"></div></div><span class="progress-percentage">0%</span></div></div>
-                                <div class="task-list"></div>
-                                <button class="add-task-btn" data-division="bendahara"><i class="fas fa-plus"></i> Tambah Tugas</button>
-                            </div>
-                             <div class="nested-card" data-division-id="acara">
-                                <h3>Acara</h3>
-                                <div class="progress-section"><label class="progress-label">Kemajuan</label><div class="progress-bar-wrapper"><div class="progress-bar-background"><div class="progress-bar-fill"></div></div><span class="progress-percentage">0%</span></div></div>
-                                <div class="task-list"></div>
-                                <button class="add-task-btn" data-division="acara"><i class="fas fa-plus"></i> Tambah Tugas</button>
-                            </div>
-                             <div class="nested-card" data-division-id="logistik">
-                                <h3>Logistik</h3>
-                                <div class="progress-section"><label class="progress-label">Kemajuan</label><div class="progress-bar-wrapper"><div class="progress-bar-background"><div class="progress-bar-fill"></div></div><span class="progress-percentage">0%</span></div></div>
-                                <div class="task-list"></div>
-                                <button class="add-task-btn" data-division="logistik"><i class="fas fa-plus"></i> Tambah Tugas</button>
-                            </div>
-                             <div class="nested-card" data-division-id="humas">
-                                <h3>Humas</h3>
-                                <div class="progress-section"><label class="progress-label">Kemajuan</label><div class="progress-bar-wrapper"><div class="progress-bar-background"><div class="progress-bar-fill"></div></div><span class="progress-percentage">0%</span></div></div>
-                                <div class="task-list"></div>
-                                <button class="add-task-btn" data-division="humas"><i class="fas fa-plus"></i> Tambah Tugas</button>
-                            </div>
-                             <div class="nested-card" data-division-id="konsumsi">
-                                <h3>Konsumsi</h3>
-                                <div class="progress-section"><label class="progress-label">Kemajuan</label><div class="progress-bar-wrapper"><div class="progress-bar-background"><div class="progress-bar-fill"></div></div><span class="progress-percentage">0%</span></div></div>
-                                <div class="task-list"></div>
-                                <button class="add-task-btn" data-division="konsumsi"><i class="fas fa-plus"></i> Tambah Tugas</button>
-                            </div>
-                             <div class="nested-card" data-division-id="pdd">
-                                <h3>PDD</h3>
-                                <div class="progress-section"><label class="progress-label">Kemajuan</label><div class="progress-bar-wrapper"><div class="progress-bar-background"><div class="progress-bar-fill"></div></div><span class="progress-percentage">0%</span></div></div>
-                                <div class="task-list"></div>
-                                <button class="add-task-btn" data-division="pdd"><i class="fas fa-plus"></i> Tambah Tugas</button>
-                            </div>
-                        </div>
                     </div>
                     <div id="juli" class="tab-pane">
-                        <p style="text-align: center; color: #65676b; padding: 20px 0;">Konten untuk bulan Juli akan ditampilkan di sini.</p>
+                        <div class="sub-tabs-nav">
+                             </div>
+                        <div class="division-cards-container">
+                           </div>
                     </div>
                 </div>
             </div>
 
-            <!-- (MODIFIKASI) Modal untuk Tambah Tugas Divisi -->
             <div id="divisionTaskModal" class="modal-overlay">
                 <div class="modal-content">
                     <form id="divisionTaskForm" class="modal-form">
@@ -169,7 +85,6 @@
                             <input type="text" id="taskDescription" placeholder="Contoh: Memantau progress divisi" required>
                         </div>
                         
-                        <!-- (BARU) Wrapper untuk menata input waktu -->
                         <div class="time-input-container">
                             <div class="time-input-wrapper">
                                 <label for="taskStartTime">Waktu Mulai</label>
@@ -184,9 +99,7 @@
 
                         <div class="modal-actions">
                             <button type="button" class="btn-secondary" id="cancelDivisionTaskBtn">Batal</button>
-                            <!-- (BARU) Tombol Simpan Saja -->
                             <button type="button" class="btn-primary" id="saveOnlyBtn">Simpan</button>
-                            <!-- (MODIFIKASI) Tombol Simpan & Bagikan -->
                             <button type="button" class="btn-primary" id="saveAndShareBtn">
                                 <i class="fab fa-whatsapp"></i> Simpan & Bagikan
                             </button>
@@ -194,7 +107,6 @@
                     </form>
                 </div>
             </div>
-
 
             <div class="card headd-container end">
                 <p><span class="headd">Made with <i class="fas fa-heart" style="color: #e74c3c;"></i> by Achmad Dzidan</span></p>
@@ -214,20 +126,17 @@
         </div>
     </div>
 
-    <!-- HANYA SATU SCRIPT TAG UNTUK CHART.JS -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <!-- HANYA SATU BLOK SCRIPT UNTUK SEMUA LOGIKA APLIKASI -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
-        import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-messaging.js";
-        import { getFirestore, doc, collection, setDoc, onSnapshot, addDoc, serverTimestamp, query, where, updateDoc } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js";
+        import { getFirestore, doc, collection, setDoc, onSnapshot, addDoc, serverTimestamp, query, updateDoc } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyBW_s50tO6zvNl-Jvkm6iQcbRMLebeLRgw",
             authDomain: "vikrantavarna-ee40e.firebaseapp.com",
             projectId: "vikrantavarna-ee40e",
-            storageBucket: "vikrantavarna-ee40e.firebasestorage.app",
+            storageBucket: "vikrantavarna-ee40e.appspot.com",
             messagingSenderId: "880669712876",
             appId: "1:880669712876:web:7c873784fde86d4679a0c9",
             measurementId: "G-SD61TKCVQ3"
@@ -235,515 +144,375 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-        const progressDocRef = doc(db, "progress", "mainState");
         const timelineCollectionRef = collection(db, "timeline");
-        const messaging = getMessaging(app);
-        
-
         const divisionTasksRef = collection(db, "divisionTasks");
-        const staticProgressRef = doc(db, "progress", "staticCheckboxes");
 
         // ==========================================================
         // --- BLOK UTAMA: DOMContentLoaded ---
         // ==========================================================
         
     document.addEventListener('DOMContentLoaded', () => {
+        let myDoughnutChart;
+        const divisionTaskModal = document.getElementById('divisionTaskModal');
+        const divisionTaskForm = document.getElementById('divisionTaskForm');
+        const ctx = document.getElementById('myDoughnutChart');
 
-        const enableNotificationsBtn = document.getElementById('enableNotificationsBtn');
-        // Fungsi untuk meminta izin notifikasi dan menyimpan token
-        const requestNotificationPermission = async () => {
-            try {
-                const permission = await Notification.requestPermission();
-                if (permission === 'granted') {
-                    showToast('Izin notifikasi diberikan!');
-                    
-                    // Daftarkan service worker
-                    const swRegistration = await navigator.serviceWorker.register('/vikrantavarna/firebase-messaging-sw.js', { 
-                        scope: '/vikrantavarna/'
-                    });
+        // Struktur kartu divisi untuk dirender
+        const divisionCardHTML = (divisionId, divisionName) => `
+            <div class="nested-card" data-division-id="${divisionId}">
+                <h3>${divisionName}</h3>
+                <div class="progress-section"><label class="progress-label">Kemajuan</label><div class="progress-bar-wrapper"><div class="progress-bar-background"><div class="progress-bar-fill"></div></div><span class="progress-percentage">0%</span></div></div>
+                <div class="task-list"></div>
+                <button class="add-task-btn" data-division="${divisionId}"><i class="fas fa-plus"></i> Tambah Tugas</button>
+            </div>`;
 
-                    // (BARU) Tunggu sampai service worker benar-benar aktif
-                    await navigator.serviceWorker.ready;
+        const divisions = [
+            { id: 'ketua-wakil', name: 'Ketua dan Wakil' }, { id: 'sekertaris', name: 'Sekertaris' },
+            { id: 'bendahara', name: 'Bendahara' }, { id: 'acara', name: 'Acara' },
+            { id: 'logistik', name: 'Logistik' }, { id: 'humas', name: 'Humas' },
+            { id: 'konsumsi', name: 'Konsumsi' }, { id: 'pdd', name: 'PDD' }
+        ];
 
-                    // (PENTING) Anda harus mengisi VAPID key ini dari Firebase Console Anda
-                    const vapidKey = "BDYd6eR9qYRSs2idB3YnbfdenhvshnHZXYVzwomh89Z0HBitreMOdH3DIC64ORyZTdACEtqKYOwJUaQ_-oN4fZA";
-                    
-                    if (vapidKey.startsWith("GANTI_DENGAN")) {
-                        showToast('Error: VAPID key belum diisi di dalam kode.', 'error');
-                        return;
+        // Inisialisasi kartu divisi di kedua tab
+        const juniCardsContainer = document.querySelector('#juni .division-cards-container');
+        const juliCardsContainer = document.querySelector('#juli .division-cards-container');
+        
+        let allCardsHTML = '';
+        divisions.forEach(div => allCardsHTML += divisionCardHTML(div.id, div.name));
+        juniCardsContainer.innerHTML = allCardsHTML;
+        juliCardsContainer.innerHTML = allCardsHTML;
+
+
+        if (ctx) {
+            const chartConfig = {
+                type: 'doughnut',
+                data: {
+                    labels: divisions.map(d => d.name),
+                    datasets: [{
+                        label: 'Jumlah Tugas',
+                        data: Array(divisions.length).fill(0),
+                        backgroundColor: ['#3498db', '#9b59b6', '#e67e22', '#e74c3c', '#f1c40f', '#1abc9c', '#2ecc71', '#7f8c8d'],
+                        borderColor: '#f0f2f5', borderWidth: 4, hoverOffset: 8
+                    }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false, cutout: '60%',
+                    plugins: {
+                        legend: { position: 'bottom', labels: { padding: 20, boxWidth: 12, font: { family: "'Roboto', sans-serif" }}},
+                        tooltip: { callbacks: { label: (c) => `${c.label}: ${c.parsed} Tugas` }}
                     }
-
-                    // Berikan registrasi manual ke getToken
-                    const currentToken = await getToken(messaging, { 
-                        vapidKey: vapidKey,
-                        serviceWorkerRegistration: swRegistration
-                    });
-                    
-                    if (currentToken) {
-                        console.log('FCM Token:', currentToken);
-                        // Simpan token ini ke Firestore
-                        const tokensRef = collection(db, 'fcmTokens');
-                        await addDoc(tokensRef, { token: currentToken, createdAt: serverTimestamp() });
-                        showToast('Berhasil berlangganan notifikasi.');
-                        enableNotificationsBtn.disabled = true;
-                        enableNotificationsBtn.innerHTML = '<i class="fas fa-check"></i> Notifikasi Aktif';
-                    } else {
-                        showToast('Gagal mendapatkan token. Izinkan notifikasi di pengaturan browser.', 'error');
-                    }
-                } else {
-                    showToast('Izin notifikasi tidak diberikan.', 'error');
                 }
-            } catch (error) {
-                console.error('An error occurred while requesting permission. ', error);
-                showToast('Terjadi error saat meminta izin.', 'error');
-            }
-        };
-        // Event listener untuk tombol aktivasi notifikasi
-        if(enableNotificationsBtn) {
-            enableNotificationsBtn.addEventListener('click', requestNotificationPermission);
+            };
+            myDoughnutChart = new Chart(ctx, chartConfig);
         }
         
-        // (BARU) Mendengarkan pesan saat website sedang dibuka
-        onMessage(messaging, (payload) => {
-            console.log('Pesan diterima saat foreground: ', payload);
-            // Tampilkan notifikasi toast kustom
-            showToast(`${payload.notification.title}: ${payload.notification.body}`);
-        });
+        const today = new Date();
+        // Untuk pengujian, Anda bisa mengganti `today` dengan tanggal lain
+        // const today = new Date('2025-07-03T10:00:00'); 
+        let activeDate = today.getDate();
+        let activeMonth = today.getMonth() + 1; // 1-12
+        let activeDateRange = '';
+        let allTasksCache = [];
 
-            let myDoughnutChart;
-            // --- ELEMEN DOM ---
-            const divisionTaskModal = document.getElementById('divisionTaskModal');
-            const divisionTaskForm = document.getElementById('divisionTaskForm');
-            const divisionCardsContainer = document.querySelector('.division-cards-container');
-            const ctx = document.getElementById('myDoughnutChart');
+        const dateRanges = {
+            juni: [{label: '1 - 7', start: 1, end: 7}, {label: '8 - 14', start: 8, end: 14}, {label: '15 - 21', start: 15, end: 21}, {label: '22 - 30', start: 22, end: 30}],
+            juli: [{label: '1 - 7', start: 1, end: 7}, {label: '8 - 14', start: 8, end: 14}, {label: '15 - 21', start: 15, end: 21}, {label: '22 - 31', start: 22, end: 31}]
+        };
 
-            if (ctx) {
-                const chartLabels = ['Ketua Wakil', 'Sekertaris', 'Bendahara', 'Acara', 'Logistik', 'Humas', 'Konsumsi', 'PDD'];
-                const chartColors = ['#3498db', '#9b59b6', '#e67e22', '#e74c3c', '#f1c40f', '#1abc9c', '#2ecc71', '#7f8c8d'];
-                const chartConfig = {
-                    type: 'doughnut',
-                    data: {
-                        labels: chartLabels,
-                        datasets: [{
-                            label: 'Jumlah Tugas',
-                            data: Array(chartLabels.length).fill(0), // Data awal kosong
-                            backgroundColor: chartColors,
-                            borderColor: '#f0f2f5',
-                            borderWidth: 4,
-                            hoverOffset: 8
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        cutout: '60%',
-                        plugins: {
-                            legend: { position: 'bottom', labels: { padding: 20, boxWidth: 12, font: { family: "'Roboto', sans-serif" }}},
-                            tooltip: { callbacks: { label: function(context) { let label = context.label || ''; if (label) { label += ': '; } if (context.parsed !== null) { label += context.parsed + ' Tugas'; } return label; }}}
-                        }
+        // Fungsi untuk membuat tombol sub-tab
+        const createSubTabButtons = (monthName) => {
+            const navContainer = document.querySelector(`#${monthName} .sub-tabs-nav`);
+            navContainer.innerHTML = '';
+            dateRanges[monthName].forEach(range => {
+                const button = document.createElement('button');
+                button.className = 'sub-tab-link';
+                button.dataset.range = range.label;
+                button.dataset.start = range.start;
+                button.dataset.end = range.end;
+                button.textContent = range.label;
+                navContainer.appendChild(button);
+            });
+        };
+
+        createSubTabButtons('juni');
+        createSubTabButtons('juli');
+        
+        const activateCurrentDateTabs = () => {
+            const monthName = activeMonth === 6 ? 'juni' : 'juli';
+            
+            document.querySelectorAll('.tab-link').forEach(tab => tab.classList.toggle('active', tab.dataset.tab === monthName));
+            document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.toggle('active', pane.id === monthName));
+
+            const activeMonthPane = document.querySelector('.tab-pane.active');
+            if (activeMonthPane) {
+                let activeRangeTab;
+                activeMonthPane.querySelectorAll('.sub-tab-link').forEach(tab => {
+                    const start = parseInt(tab.dataset.start, 10);
+                    const end = parseInt(tab.dataset.end, 10);
+                    const isActive = activeDate >= start && activeDate <= end;
+                    tab.classList.toggle('active', isActive);
+                    if (isActive) {
+                        activeRangeTab = tab;
+                        activeDateRange = tab.dataset.range;
                     }
-                };
-                // Isi variabel myDoughnutChart yang sudah dideklarasikan di atas
-                myDoughnutChart = new Chart(ctx, chartConfig);
+                });
+                if (activeRangeTab) {
+                    activeRangeTab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                }
             }
+        };
+        
+        const showDivisionTaskModal = (show = true) => divisionTaskModal.classList.toggle('visible', show);
+        
+        const updateProgressBar = (container) => {
+            const allCheckboxes = container.querySelectorAll('.task-checkbox');
+            const checkedCheckboxes = container.querySelectorAll('.task-checkbox:checked');
+            const percentage = allCheckboxes.length > 0 ? (checkedCheckboxes.length / allCheckboxes.length) * 100 : 0;
+            const bar = container.querySelector('.progress-bar-fill');
+            const text = container.querySelector('.progress-percentage');
+            if (bar) bar.style.width = `${percentage}%`;
+            if (text) text.textContent = `${Math.round(percentage)}%`;
+        };
+
+        const updateTotalProgress = () => {
+            const activeCardsContainer = document.querySelector('.tab-pane.active .division-cards-container');
+            if (!activeCardsContainer) return;
+            const allTasksForRange = activeCardsContainer.querySelectorAll('.task-checkbox');
+            const checkedTasksForRange = activeCardsContainer.querySelectorAll('.task-checkbox:checked');
+            const totalPercentage = allTasksForRange.length > 0 ? (checkedTasksForRange.length / allTasksForRange.length) * 100 : 0;
             
-            const today = new Date();
-            let activeDate = today.getDate();
-            let activeMonth = today.getMonth() + 1;
-            let allTasksCache = [];
+            const bar = document.getElementById('progressBarFill');
+            const text = document.getElementById('progressPercentage');
+            if (bar) bar.style.width = `${totalPercentage}%`;
+            if (text) text.textContent = `${Math.round(totalPercentage)}%`;
+        };
 
-            const scrollActiveDateIntoView = (activeTab) => {
-                if (!activeTab) return;
-                const navContainer = activeTab.parentElement;
-                navContainer.scrollTo({ left: activeTab.offsetLeft - 30, behavior: 'smooth' });
-            };
+        const updateDoughnutChart = () => {
+            if (!myDoughnutChart) return;
 
-            const activateCurrentDateTabs = () => {
-                const monthName = activeMonth === 6 ? 'juni' : (activeMonth === 7 ? 'juli' : 'juni');
-                document.querySelectorAll('.tab-link').forEach(tab => tab.classList.toggle('active', tab.dataset.tab === monthName));
-                document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.toggle('active', pane.id === monthName));
-                const activeMonthPane = document.querySelector('.tab-pane.active');
-                if (activeMonthPane) {
-                    let activeDateTab;
-                    activeMonthPane.querySelectorAll('.sub-tab-link').forEach(tab => {
-                        const isActive = parseInt(tab.dataset.date, 10) === activeDate;
-                        tab.classList.toggle('active', isActive);
-                        if (isActive) activeDateTab = tab;
-                    });
-                    setTimeout(() => scrollActiveDateIntoView(activeDateTab), 100);
-                }
-            };
+            const activeRangeButton = document.querySelector('.sub-tab-link.active');
+            if (!activeRangeButton) return;
+            const start = parseInt(activeRangeButton.dataset.start);
+            const end = parseInt(activeRangeButton.dataset.end);
+
+            const tasksForRange = allTasksCache.filter(task => {
+                 const taskDate = new Date(task.taskDate + 'T00:00:00');
+                 const date = taskDate.getDate();
+                 const month = taskDate.getMonth() + 1;
+                 return month === activeMonth && date >= start && date <= end;
+            });
+
+            const taskCounts = divisions.reduce((acc, div) => {
+                acc[div.id] = tasksForRange.filter(t => t.divisionId === div.id).length;
+                return acc;
+            }, {});
             
-            const showDivisionTaskModal = (show = true) => divisionTaskModal.classList.toggle('visible', show);
-            
-            const updateProgressBar = (container) => {
-                const allCheckboxes = container.querySelectorAll('.task-checkbox');
-                const checkedCheckboxes = container.querySelectorAll('.task-checkbox:checked');
-                const percentage = allCheckboxes.length > 0 ? (checkedCheckboxes.length / allCheckboxes.length) * 100 : 0;
-                const bar = container.querySelector('.progress-bar-fill');
-                const text = container.querySelector('.progress-percentage');
-                if (bar) bar.style.width = `${percentage}%`;
-                if (text) text.textContent = `${Math.round(percentage)}%`;
-            };
+            myDoughnutChart.data.datasets[0].data = divisions.map(div => taskCounts[div.id] || 0);
+            myDoughnutChart.update();
+        };
 
-            // const updateTotalProgress = () => {
-            //     const allTasks = document.querySelectorAll('.task-checkbox');
-            //     const checkedTasks = document.querySelectorAll('.task-checkbox:checked');
-            //     const totalPercentage = allTasks.length > 0 ? (checkedTasks.length / checkedTasks.length) * 100 : 0;
-            //     const bar = document.getElementById('progressBarFill');
-            //     const text = document.getElementById('progressPercentage');
-            //     if (bar) bar.style.width = `${totalPercentage}%`;
-            //     if (text) text.textContent = `${Math.round(totalPercentage)}%`;
-            // };
-
-                const updateTotalProgress = () => {
-                // (MODIFIKASI) Hanya pilih checkbox yang saat ini ditampilkan
-                // di dalam kontainer kartu divisi, yang sesuai dengan tanggal aktif.
-                const divisionCardsContainer = document.querySelector('.division-cards-container');
-                if (!divisionCardsContainer) return;
-
-                const allTasksForToday = divisionCardsContainer.querySelectorAll('.task-checkbox');
-                const checkedTasksForToday = divisionCardsContainer.querySelectorAll('.task-checkbox:checked');
-
-                const totalPercentage = allTasksForToday.length > 0 ? (checkedTasksForToday.length / allTasksForToday.length) * 100 : 0;
-                
-                const bar = document.getElementById('progressBarFill');
-                const text = document.getElementById('progressPercentage');
-                if (bar) bar.style.width = `${totalPercentage}%`;
-                if (text) text.textContent = `${Math.round(totalPercentage)}%`;
-            };
-
-            const updateDoughnutChart = () => {
-                if (!myDoughnutChart) return;
-
-                const selectedDateString = `2025-${String(activeMonth).padStart(2, '0')}-${String(activeDate).padStart(2, '0')}`;
-                const tasksForDate = allTasksCache.filter(task => task.taskDate === selectedDateString);
-
-                const labelToIdMap = {
-                    'Ketua Wakil': 'ketua-wakil', 'Sekertaris': 'sekertaris', 'Bendahara': 'bendahara', 'Acara': 'acara',
-                    'Logistik': 'logistik', 'Humas': 'humas', 'Konsumsi': 'konsumsi', 'PDD': 'pdd'
-                };
-
-                const taskCounts = {};
-                Object.values(labelToIdMap).forEach(id => taskCounts[id] = 0);
-
-                tasksForDate.forEach(task => {
-                    if (taskCounts.hasOwnProperty(task.divisionId)) {
-                        taskCounts[task.divisionId]++;
-                    }
-                });
-
-                const newData = myDoughnutChart.data.labels.map(label => {
-                    const id = labelToIdMap[label];
-                    return taskCounts[id] || 0;
-                });
-
-                myDoughnutChart.data.datasets[0].data = newData;
-                myDoughnutChart.update();
-            };
-
-            // === Fungsi untuk merender item linimasa ===
-            const renderTimelineItem = (item) => {
-                const li = document.createElement('li');
-                li.className = 'timeline-item';
-                li.setAttribute('data-id', item.id);
-
-                function formatDate(dateString) {
-                    const date = new Date(dateString);
-                    const day = date.getDate();
-                    const monthNames = [
-                        'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
-                        'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
-                    ];
-                    const month = monthNames[date.getMonth()];
-                    const year = date.getFullYear();
-                    return `${day} ${month} ${year}`;
-                }
-
-                li.innerHTML = `
-                    <div class="item-date">${formatDate(item.date)}</div>
+        const loadTimelineItems = () => onSnapshot(timelineCollectionRef, (snapshot) => {
+            const list = document.getElementById('timelineList');
+            if(!list) return;
+            const items = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            items.sort((a, b) => new Date(a.date) - new Date(b.date));
+            list.innerHTML = items.map(item => `
+                <li class="timeline-item" data-id="${item.id}">
+                    <div class="item-date">${new Date(item.date + 'T00:00:00').toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric'})}</div>
                     <h3 class="item-title">${item.title}</h3>
                     <p class="item-desc">${item.description.replace(/\n/g, '<br>')}</p>
-                `;
-                return li;
+                </li>`
+            ).join('');
+        });
+
+        const renderAllDivisionTasks = () => {
+            const activePane = document.querySelector('.tab-pane.active');
+            if (!activePane) return;
+            const activeRangeButton = activePane.querySelector('.sub-tab-link.active');
+            if (!activeRangeButton) return;
+
+            const start = parseInt(activeRangeButton.dataset.start);
+            const end = parseInt(activeRangeButton.dataset.end);
+
+            const tasksForRange = allTasksCache.filter(task => {
+                 const taskDate = new Date(task.taskDate + 'T00:00:00');
+                 const date = taskDate.getDate();
+                 const month = taskDate.getMonth() + 1;
+                 return month === activeMonth && date >= start && date <= end;
+            });
+
+            const tasksByDivision = tasksForRange.reduce((acc, task) => {
+                (acc[task.divisionId] = acc[task.divisionId] || []).push(task);
+                return acc;
+            }, {});
+
+            activePane.querySelectorAll('.nested-card[data-division-id]').forEach(card => {
+                const divisionId = card.dataset.divisionId;
+                const tasksForDivision = tasksByDivision[divisionId] || [];
+                const taskList = card.querySelector('.task-list');
+                
+                if (tasksForDivision.length === 0) {
+                    taskList.innerHTML = `<p class="no-task-msg">Tidak ada tugas untuk rentang tanggal ini.</p>`;
+                } else {
+                    tasksForDivision.sort((a, b) => a.taskDate.localeCompare(b.taskDate) || (a.startTime || "00:00").localeCompare(b.startTime || "00:00"));
+                    taskList.innerHTML = tasksForDivision.map(task => {
+                         const taskDay = new Date(task.taskDate + 'T00:00:00').toLocaleDateString('id-ID', { weekday: 'long' });
+                         return `
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="${task.id}" class="task-checkbox" data-doc-id="${task.id}" ${task.isCompleted ? 'checked' : ''}>
+                                <label for="${task.id}">
+                                    <span>${task.description}</span>
+                                    <span class="task-time">(${taskDay}) ${task.startTime || ''} - ${task.endTime || ''}</span>
+                                </label>
+                            </div>`;
+                    }).join('');
+                }
+                updateProgressBar(card);
+            });
+            updateTotalProgress();
+            updateDoughnutChart();
+        };
+
+        const showToast = (message, type = 'success') => {
+             const toast = document.createElement('div');
+             toast.className = `toast ${type} show`;
+             toast.textContent = message;
+             document.body.appendChild(toast);
+             setTimeout(() => {
+                 toast.classList.remove('show');
+                 setTimeout(() => toast.remove(), 500);
+             }, 3000);
+        };
+
+        window.openAddModal = () => document.getElementById('timelineModal').style.display = 'block';
+        window.closeModal = () => document.getElementById('timelineModal').style.display = 'none';
+        window.onclick = (event) => { if (event.target == document.getElementById('timelineModal')) closeModal(); };
+
+        window.saveTimelineItem = async () => {
+            const data = {
+                date: document.getElementById('modalDate').value,
+                title: document.getElementById('modalTitleInput').value,
+                description: document.getElementById('modalDesc').value,
+                createdAt: serverTimestamp()
             };
+            if (!data.date || !data.title || !data.description) return alert("Semua bidang harus diisi.");
+            try {
+                await addDoc(timelineCollectionRef, data);
+                alert("Item berhasil disimpan!");
+                closeModal();
+            } catch (error) {
+                console.error("Gagal menyimpan linimasa:", error);
+                alert("Terjadi kesalahan saat menyimpan.");
+            }
+        };
 
-            const loadTimelineItems = () => {
-                onSnapshot(timelineCollectionRef, (snapshot) => {
-                    const timelineList = document.getElementById('timelineList');
-                    if (!timelineList) return;
-                    timelineList.innerHTML = '';
+        const handleSaveTask = async (shouldShare = false) => {
+            const description = document.getElementById('taskDescription').value;
+            const divisionId = document.getElementById('divisionIdField').value;
+            if (!description) return showToast("Deskripsi tugas tidak boleh kosong.", 'error');
 
-                    const items = [];
-                    snapshot.forEach(doc => {
-                        items.push({ id: doc.id, ...doc.data() });
-                    });
+            // Untuk menambahkan tugas baru, secara default kita tambahkan di tanggal hari ini
+            const selectedDateString = today.toISOString().split('T')[0]; // Format YYYY-MM-DD
 
-                    items.sort((a, b) => new Date(a.date) - new Date(b.date));
-                    items.forEach(item => {
-                        timelineList.appendChild(renderTimelineItem(item));
-                    });
-                });
+            const data = {
+                divisionId,
+                description,
+                taskDate: selectedDateString,
+                startTime: document.getElementById('taskStartTime').value || "",
+                endTime: document.getElementById('taskEndTime').value || "",
+                isCompleted: false,
+                createdAt: serverTimestamp(),
             };
-
             
-            const renderAllDivisionTasks = () => {
-                const selectedDateString = `2025-${String(activeMonth).padStart(2, '0')}-${String(activeDate).padStart(2, '0')}`;
-                const tasksByDivision = allTasksCache.reduce((acc, task) => {
-                    if (task.taskDate === selectedDateString) {
-                        (acc[task.divisionId] = acc[task.divisionId] || []).push(task);
-                    }
-                    return acc;
-                }, {});
+            try {
+                await addDoc(divisionTasksRef, data);
+                showDivisionTaskModal(false);
+                showToast(`Tugas untuk ${divisionId} berhasil disimpan!`);
 
-                if (divisionCardsContainer) {
-                    divisionCardsContainer.querySelectorAll('.nested-card[data-division-id]').forEach(card => {
-                        const divisionId = card.dataset.divisionId;
-                        const tasksForDivision = tasksByDivision[divisionId] || [];
-                        const taskList = card.querySelector('.task-list');
-                        taskList.innerHTML = '';
-                        if (tasksForDivision.length === 0) {
-                            taskList.innerHTML = `<p style="text-align:center; font-size: 0.9rem; color:#888;">Tidak ada tugas untuk tanggal ini.</p>`;
-                        } else {
-                            tasksForDivision.sort((a, b) => (a.startTime || "00:00").localeCompare(b.startTime || "00:00"));
-                            tasksForDivision.forEach(task => {
-                                const div = document.createElement('div');
-                                div.className = 'checkbox-item';
-                                div.innerHTML = `
-                                    <input type="checkbox" id="${task.id}" class="task-checkbox" data-doc-id="${task.id}" ${task.isCompleted ? 'checked' : ''}>
-                                    <label for="${task.id}">
-                                        <span>${task.description}</span>
-                                        <span class="task-time">${task.startTime || ''} - ${task.endTime || ''}</span>
-                                    </label>`;
-                                taskList.appendChild(div);
-                            });
-                        }
-                        updateProgressBar(card);
-                    });
-                }
-                updateTotalProgress();
-                updateDoughnutChart();
-            };
-
-                        // --- (MODIFIKASI) Logika untuk Form Tambah Tugas ---
-            
-            // (BARU) Definisikan fungsi showToast di sini agar bisa diakses
-            const showToast = (message, type = 'success') => {
-                const toastContainer = document.getElementById('toast-container');
-                if (!toastContainer) return; // Pastikan kontainer ada
-
-                const toast = document.createElement('div');
-                toast.className = `toast ${type}`;
-                toast.textContent = message;
-                toastContainer.appendChild(toast);
-                setTimeout(() => {
-                    toast.classList.add('show');
-                }, 10);
-                setTimeout(() => {
-                    toast.classList.remove('show');
-                    setTimeout(() => toast.remove(), 500);
-                }, 3000);
-            };
-
-            window.openAddModal = () => {
-                const timelineModal = document.getElementById('timelineModal');
-                if (timelineModal) {
-                    timelineModal.style.display = 'block';
-                }
-            };
-            window.closeModal = () => {
-                const timelineModal = document.getElementById('timelineModal');
-                if (timelineModal) {
-                    timelineModal.style.display = 'none';
-                }
-            };
-
-            window.onclick = function(event) {
-                const modal = document.getElementById('timelineModal');
-                if (event.target === modal) {
-                    modal.style.display = "none";
-                }
-            };
-
-
-            window.saveTimelineItem = async () => {
-                const modalId = document.getElementById('modalId').value;
-                const modalDate = document.getElementById('modalDate').value;
-                const title = document.getElementById('modalTitleInput').value;
-                const desc = document.getElementById('modalDesc').value;
-
-                if (!modalDate || !title || !desc) {
-                    alert("Semua bidang harus diisi.");
-                    return;
-                }
-
-                const data = {
-                    date: modalDate,
-                    title: title,
-                    description: desc,
-                    createdAt: serverTimestamp()
-                };
-
-                try {
-                    if (modalId) {
-                        const docRef = doc(timelineCollectionRef, modalId);
-                        await setDoc(docRef, data, { merge: true });
+                if (shouldShare) {
+                    const pesan = `🔔 *Notifikasi Tugas Baru* 🔔\n\nHalo tim! Ada tugas baru untuk divisi *${divisionId.replace('-', ' ')}*:\n\n📝 *Tugas*: ${data.description}\n📆 *Hari*: ${today.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long' })}\n⏰ *Waktu*: ${data.startTime || 'N/A'} - ${data.endTime || 'N/A'}\n\nMohon perhatiannya. Terima kasih dan semangat! ✨`;
+                    if (navigator.share) {
+                        await navigator.share({ title: 'Notifikasi Tugas Baru KKN', text: pesan });
                     } else {
-                        await addDoc(timelineCollectionRef, data);
+                        navigator.clipboard.writeText(pesan);
+                        showToast("Pesan disalin! Silakan tempel di grup WhatsApp.");
                     }
-
-                    alert("Item berhasil disimpan!");
-                    closeModal();
-                } catch (error) {
-                    console.error("Gagal menyimpan linimasa:", error);
-                    alert("Terjadi kesalahan saat menyimpan.");
                 }
-            };
+            } catch (error) {
+                showToast("Gagal menyimpan tugas.", 'error');
+                console.error("Error saving task: ", error);
+            }
+        };
+        
+        document.getElementById('saveOnlyBtn').addEventListener('click', () => handleSaveTask(false));
+        document.getElementById('saveAndShareBtn').addEventListener('click', () => handleSaveTask(true));
+        document.getElementById('cancelDivisionTaskBtn').addEventListener('click', () => showDivisionTaskModal(false));
 
+        // Event Delegation untuk seluruh konten
+        document.querySelector('.tabs-content').addEventListener('click', (e) => {
+            // Tombol tambah tugas
+            const addTaskBtn = e.target.closest('.add-task-btn');
+            if (addTaskBtn) {
+                const divisionId = addTaskBtn.dataset.division;
+                divisionTaskForm.reset();
+                document.getElementById('divisionIdField').value = divisionId;
+                document.getElementById('divisionTaskModalTitle').textContent = `Tambah Tugas untuk ${divisions.find(d=>d.id === divisionId).name}`;
+                showDivisionTaskModal();
+            }
 
-            // Fungsi inti untuk menyimpan data, bisa dipanggil oleh kedua tombol
-            const handleSaveTask = async (shouldShare = false) => {
-                const activeMonthTab = document.querySelector('.tab-link.active');
-                const activeDateTab = document.querySelector('.sub-tab-link.active');
-
-                if (!activeMonthTab || !activeDateTab) {
-                    showToast("Error: Gagal menentukan tanggal/bulan aktif.", 'error');
-                    return;
-                }
-
-                const activeMonth = activeMonthTab.dataset.tab === 'juni' ? 6 : 7;
-                const activeDate = parseInt(activeDateTab.dataset.date, 10);
-                const selectedDateString = `2025-${String(activeMonth).padStart(2, '0')}-${String(activeDate).padStart(2, '0')}`;
-                
-                const description = document.getElementById('taskDescription').value;
-                const startTime = document.getElementById('taskStartTime').value;
-                const endTime = document.getElementById('taskEndTime').value;
-                const divisionId = document.getElementById('divisionIdField').value;
-                
-                // Validasi input
-                if (!description) {
-                    showToast("Deskripsi tugas tidak boleh kosong.", 'error');
-                    return;
-                }
-
-                // Simpan data ke Firebase
-                const data = {
-                    divisionId: divisionId,
-                    description: description,
-                    taskDate: selectedDateString,
-                    startTime: startTime || "", // Simpan string kosong jika tidak diisi
-                    endTime: endTime || "",   // Simpan string kosong jika tidak diisi
-                    isCompleted: false,
-                    createdAt: serverTimestamp(),
-                };
-                
+            // Tombol sub-tab rentang tanggal
+            const subTabLink = e.target.closest('.sub-tab-link');
+            if (subTabLink) {
+                const parentNav = subTabLink.parentElement;
+                parentNav.querySelector('.active')?.classList.remove('active');
+                subTabLink.classList.add('active');
+                activeDateRange = subTabLink.dataset.range;
+                renderAllDivisionTasks();
+            }
+        });
+        
+        document.querySelector('.tabs-content').addEventListener('change', async (e) => {
+             // Checkbox tugas
+             if (e.target.classList.contains('task-checkbox')) {
+                const docId = e.target.dataset.docId;
+                const isCompleted = e.target.checked;
                 try {
-                    // Asumsikan 'divisionTasksRef' dan 'showDivisionTaskModal' sudah dideklarasikan di scope yang lebih tinggi
-                    await addDoc(divisionTasksRef, data);
-                    showDivisionTaskModal(false);
-                    showToast(`Tugas untuk ${divisionId} berhasil disimpan!`);
-
-                    // Jika tombol "Simpan & Bagikan" yang ditekan
-                    if (shouldShare) {
-                        const pesanUntukDibagikan = `
-🔔 *Notifikasi Tugas Baru* 🔔
-
-Halo tim! Ada tugas baru untuk divisi *${divisionId.replace('-', ' ')}*:
-
-📝 *Tugas*: ${description}
-📆 *Hari*: ${new Date(selectedDateString).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long' })}
-⏰ *Waktu*: ${startTime || 'N/A'} - ${endTime || 'N/A'}
-
-Mohon perhatiannya. Terima kasih dan semangat! ✨
-                        `.trim();
-
-                        if (navigator.share) {
-                            await navigator.share({
-                                title: 'Notifikasi Tugas Baru KKN',
-                                text: pesanUntukDibagikan,
-                            });
-                        } else {
-                            const textArea = document.createElement('textarea');
-                            textArea.value = pesanUntukDibagikan;
-                            document.body.appendChild(textArea);
-                            textArea.select();
-                            document.execCommand('copy');
-                            document.body.removeChild(textArea);
-                            showToast("Pesan disalin! Silakan tempel di grup WhatsApp.");
-                        }
-                    }
-                } catch (error) {
-                     showToast("Gagal menyimpan tugas.", 'error');
-                     console.error("Error saving task: ", error);
+                    await updateDoc(doc(db, "divisionTasks", docId), { isCompleted });
+                    // UI akan diperbarui oleh snapshot listener
+                } catch(error) {
+                    console.error("Error updating task status:", error);
+                    showToast("Gagal memperbarui status tugas.", "error");
                 }
-            };
+             }
+        });
 
-            // Tambahkan event listener baru ke tombol-tombol
-            document.getElementById('saveOnlyBtn').addEventListener('click', () => {
-                handleSaveTask(false); // Panggil fungsi simpan tanpa berbagi
-            });
-
-            document.getElementById('saveAndShareBtn').addEventListener('click', () => {
-                handleSaveTask(true); // Panggil fungsi simpan DENGAN berbagi
-            });
-
-
-
-            // Menggunakan Event Delegation untuk semua tombol dan checkbox
-            if (divisionCardsContainer) {
-                divisionCardsContainer.addEventListener('click', (e) => {
-                    if (e.target.closest('.add-task-btn')) {
-                        const button = e.target.closest('.add-task-btn');
-                        const divisionId = button.dataset.division;
-                        divisionTaskForm.reset();
-                        document.getElementById('divisionIdField').value = divisionId;
-                        document.getElementById('divisionTaskModalTitle').textContent = `Tambah Tugas ${divisionId.replace('-', ' ')}`;
-                        showDivisionTaskModal();
-                    }   
-                });
-
-                divisionCardsContainer.addEventListener('change', async (e) => {
-                    if (e.target.classList.contains('task-checkbox')) {
-                        const docId = e.target.dataset.docId;
-                        const isCompleted = e.target.checked;
-                        await updateDoc(doc(db, "divisionTasks", docId), { isCompleted });
-                    }
-                });
-            }
-
-            document.querySelectorAll('.sub-tab-link').forEach(subLink => {
-                subLink.addEventListener('click', (e) => {
-                    activeDate = parseInt(e.currentTarget.dataset.date, 10);
-                    document.querySelectorAll('.sub-tab-link').forEach(link => link.classList.remove('active'));
-                    e.currentTarget.classList.add('active');
-                    scrollActiveDateIntoView(e.currentTarget);
-                    renderAllDivisionTasks();
-                });
-            });
-
-            document.querySelectorAll('.tab-link').forEach(link => {
-                link.addEventListener('click', (e) => {
-                    const tabId = e.currentTarget.dataset.tab;
-                    activeMonth = tabId === 'juni' ? 6 : 7;
-                    const todayForMonthSwitch = new Date();
-                    activeDate = (activeMonth === (todayForMonthSwitch.getMonth() + 1)) ? todayForMonthSwitch.getDate() : 1;
-                    activateCurrentDateTabs();
-                    renderAllDivisionTasks();
-                });
-            });
-
-            const cancelBtn = document.getElementById('cancelDivisionTaskBtn');
-            if(cancelBtn) {
-                cancelBtn.addEventListener('click', () => showDivisionTaskModal(false));
-            }
-
-            onSnapshot(query(divisionTasksRef), (snapshot) => {
-                allTasksCache = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        // Event listener untuk tab bulan utama
+        document.querySelectorAll('.tab-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                const tabId = e.currentTarget.dataset.tab;
+                activeMonth = tabId === 'juni' ? 6 : 7;
+                
+                // Jika pindah bulan, pilih rentang tanggal pertama secara default
+                const isTodayInThisMonth = activeMonth === (today.getMonth() + 1);
+                if (isTodayInThisMonth) {
+                    activeDate = today.getDate();
+                } else {
+                    activeDate = 1; // Jika bukan bulan ini, aktifkan tanggal 1
+                }
+                
                 activateCurrentDateTabs();
                 renderAllDivisionTasks();
-                loadTimelineItems();
             });
         });
+
+        // Inisialisasi awal
+        onSnapshot(query(divisionTasksRef), (snapshot) => {
+            allTasksCache = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            activateCurrentDateTabs(); // Aktifkan tab berdasarkan tanggal hari ini
+            renderAllDivisionTasks();  // Render konten berdasarkan tab yang aktif
+            loadTimelineItems();
+        });
+    });
     </script>
 </body>
 </html>
