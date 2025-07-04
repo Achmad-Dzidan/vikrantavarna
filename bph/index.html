@@ -442,9 +442,127 @@ document.addEventListener('DOMContentLoaded', () => {
     const showModal = (modalElement) => modalElement.classList.add('visible');
     const closeModal = (modalElement) => modalElement.classList.remove('visible');
     
-    const saveAnnouncement = async () => { /* ... (kode tidak berubah) ... */ };
-    const saveTimelineItem = async () => { /* ... (kode tidak berubah) ... */ };
-    const handleSaveTask = async (shouldShare = false) => { /* ... (kode tidak berubah) ... */ };
+    const saveAnnouncement = async () => {
+        // 1. Ambil data dari elemen input di form
+        const data = {
+            date: document.getElementById('announcementDate').value,
+            title: document.getElementById('announcementTitleInput').value,
+            description: document.getElementById('announcementDesc').value,
+        };
+
+        // 2. Validasi sederhana: pastikan semua kolom terisi
+        if (!data.date || !data.title || !data.description) {
+            alert("Semua bidang pengumuman harus diisi.");
+            return; // Hentikan fungsi jika ada yang kosong
+        }
+
+        try {
+            // 3. Simpan data ke Firestore dengan menambahkan timestamp server
+            await addDoc(announcementCollectionRef, { ...data, createdAt: serverTimestamp() });
+            alert("Pengumuman berhasil disimpan!");
+            closeModal(announcementModal); // Tutup form setelah berhasil
+        } catch (error) {
+            console.error("Gagal menyimpan pengumuman:", error);
+            alert("Terjadi kesalahan saat menyimpan pengumuman.");
+        }
+    };
+
+    const saveTimelineItem = async () => {
+        // 1. Ambil data dari elemen input di form
+        const data = {
+            date: document.getElementById('timelineDate').value,
+            title: document.getElementById('timelineTitleInput').value,
+            description: document.getElementById('timelineDesc').value,
+        };
+
+        // 2. Validasi sederhana: pastikan semua kolom terisi
+        if (!data.date || !data.title || !data.description) {
+            alert("Semua bidang linimasa harus diisi.");
+            return; // Hentikan fungsi jika ada yang kosong
+        }
+
+        try {
+            // 3. Simpan data ke Firestore dengan menambahkan timestamp server
+            await addDoc(timelineCollectionRef, { ...data, createdAt: serverTimestamp() });
+            alert("Item linimasa berhasil disimpan!");
+            closeModal(timelineModal); // Tutup form setelah berhasil
+        } catch (error) {
+            console.error("Gagal menyimpan linimasa:", error);
+            alert("Terjadi kesalahan saat menyimpan linimasa.");
+        }
+    };
+    
+    const handleSaveTask = async (shouldShare = false) => {
+    const description = document.getElementById('taskDescription').value;
+    const divisionId = document.getElementById('divisionIdField').value;
+    
+    if (!description) {
+        alert("Deskripsi tugas tidak boleh kosong.");
+        return;
+    }
+
+    // Data yang akan disimpan ke Firebase
+    const dataToSave = {
+        divisionId: divisionId,
+        description: description,
+        taskDate: today.toISOString().split('T')[0], // Simpan tanggal hari ini
+        startTime: document.getElementById('taskStartTime').value || "",
+        endTime: document.getElementById('taskEndTime').value || "",
+        isCompleted: false,
+        createdAt: serverTimestamp(),
+    };
+
+    try {
+        // 1. Simpan tugas ke database
+        await addDoc(divisionTasksRef, dataToSave);
+        closeModal(divisionTaskModal); // Tutup form setelah simpan
+        alert('Tugas berhasil disimpan!');
+
+        // 2. Jika tombol "Simpan & Bagikan" yang ditekan
+        if (shouldShare) {
+            // Cari nama divisi yang lebih mudah dibaca
+            const divisionName = divisions.find(d => d.id === divisionId)?.name || 'Tugas Umum';
+            
+            // Format tanggal ke format "Kamis, 3 Juli"
+            const dateString = today.toLocaleDateString('id-ID', {
+                weekday: 'long',
+                day: 'numeric',
+                month: 'long'
+            });
+
+            // Siapkan waktu, gunakan "N/A" jika kosong
+            const startTime = dataToSave.startTime || 'N/A';
+            const endTime = dataToSave.endTime || 'N/A';
+
+            // 3. Buat template pesan sesuai contoh
+            const pesanWhatsApp = `🔔 *Notifikasi Tugas Baru* 🔔
+
+Halo tim! Ada tugas baru untuk divisi *${divisionName}*:
+
+📝 *Tugas*: ${description}
+📆 *Hari*: ${dateString}
+⏰ *Waktu*: ${startTime} - ${endTime}
+
+Mohon perhatiannya. Terima kasih dan semangat! ✨`;
+
+            // 4. Gunakan Web Share API untuk membuka dialog bagikan
+            if (navigator.share) {
+                await navigator.share({
+                    title: 'Tugas Baru KKN',
+                    text: pesanWhatsApp,
+                });
+            } else {
+                // Fallback untuk browser yang tidak mendukung (misal: desktop)
+                // Salin pesan ke clipboard dan beri tahu pengguna
+                navigator.clipboard.writeText(pesanWhatsApp);
+                alert('Pesan telah disalin! Silakan tempel dan bagikan ke WhatsApp.');
+            }
+        }
+    } catch (error) {
+        console.error("Gagal menyimpan atau membagikan tugas: ", error);
+        alert("Terjadi kesalahan. Silakan coba lagi.");
+    }
+};
     
     // --- EVENT LISTENERS ---
     document.getElementById('addAnnouncementBtn').addEventListener('click', () => showModal(announcementModal));
