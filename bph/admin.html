@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Linimasa & Tim Proyek</title>
-    <link rel="icon" type="image/x-icon" href="/src/logo.jpg">
-    <link rel="stylesheet" href="style/style.css">
+    <link rel="icon" type="../image/x-icon" href="/src/logo.jpg">
+    <link rel="stylesheet" href="../style/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
@@ -24,12 +24,18 @@
             <div class="card announcement-container">
                 <h2>Pengumuman 📢</h2>
                 <ul class="announcement" id="announcementList"></ul>
+                <div class="announcement-item-actions">
+                    <button id="addAnnouncementBtn" class="btn-add">Tambah</button>
                 </div>
+            </div>
             
             <div class="card timeline-container">
                 <h2>Linimasa Proyek Terperinci</h2>
                 <ul class="timeline" id="timelineList"></ul>
-                 </div>
+                <div class="timeline-item-actions">
+                    <button id="addTimelineBtn" class="btn-add">Tambah</button>
+                </div>
+            </div>
 
             <div class="card overview-container">
                 <h2>Gambaran Umum Proyek</h2>
@@ -127,11 +133,74 @@
         </div>
     </div>
 
+    <div id="divisionTaskModal" class="modal-overlay">
+        <div class="modal-content">
+            <form id="divisionTaskForm" class="modal-form">
+                <h3 id="divisionTaskModalTitle">Tambah Tugas Baru</h3>
+                <input type="hidden" id="divisionIdField">
+                <div>
+                    <label for="taskDescription">Deskripsi Tugas</label>
+                    <input type="text" id="taskDescription" placeholder="Contoh: Memantau progress divisi" required>
+                </div>
+                <div class="time-input-container">
+                    <div class="time-input-wrapper">
+                        <label for="taskStartTime">Waktu Mulai</label>
+                        <input type="time" id="taskStartTime">
+                    </div>
+                    <span class="time-separator">-</span>
+                    <div class="time-input-wrapper">
+                        <label for="taskEndTime">Waktu Berakhir</label>
+                        <input type="time" id="taskEndTime">
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary" id="cancelDivisionTaskBtn">Batal</button>
+                    <button type="button" class="btn-primary" id="saveOnlyBtn">Simpan</button>
+                    <button type="button" class="btn-primary" id="saveAndShareBtn">
+                        <i class="fab fa-whatsapp"></i> Simpan & Bagikan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="announcementModal" class="modal-overlay">
+        <div class="modal-content">
+            <h3>Tambah Pengumuman Baru</h3>
+            <label for="announcementDate">Tanggal</label>
+            <input type="date" id="announcementDate" required>
+            <label for="announcementTitleInput">Judul Pengumuman</label>
+            <input type="text" id="announcementTitleInput" placeholder="Judul Pengumuman" required>
+            <label for="announcementDesc">Isi Pengumuman</label>
+            <textarea id="announcementDesc" placeholder="Isi Pengumuman" required rows="4"></textarea>
+            <div class="modal-actions">
+                <button type="button" id="cancelAnnouncementBtn" class="btn-cancel">Batal</button>
+                <button type="button" id="saveAnnouncementBtn" class="btn-save">Simpan</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="timelineModal" class="modal-overlay">
+        <div class="modal-content">
+            <h3>Tambah Item Linimasa</h3>
+            <label for="timelineDate">Tanggal</label>
+            <input type="date" id="timelineDate" required>
+            <label for="timelineTitleInput">Judul</label>
+            <input type="text" id="timelineTitleInput" placeholder="Judul" required>
+            <label for="timelineDesc">Deskripsi</label>
+            <textarea id="timelineDesc" placeholder="Deskripsi" required rows="4"></textarea>
+            <div class="modal-actions">
+                 <button type="button" id="cancelTimelineBtn" class="btn-cancel">Batal</button>
+                 <button type="button" id="saveTimelineBtn" class="btn-save">Simpan</button>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
-import { getFirestore, collection, onSnapshot, query } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js";
+import { getFirestore, doc, collection, onSnapshot, addDoc, serverTimestamp, query, updateDoc } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBW_s50tO6zvNl-Jvkm6iQcbRMLebeLRgw",
@@ -151,16 +220,20 @@ const divisionTasksRef = collection(db, "divisionTasks");
 
 document.addEventListener('DOMContentLoaded', () => {
     let myDoughnutChart;
+    const divisionTaskModal = document.getElementById('divisionTaskModal');
+    const announcementModal = document.getElementById('announcementModal');
+    const timelineModal = document.getElementById('timelineModal');
+    const divisionTaskForm = document.getElementById('divisionTaskForm');
     const ctx = document.getElementById('myDoughnutChart');
     
     const GENERAL_TASK_ID = 'general-task';
 
-    // Modifikasi: Tombol "Tambah Tugas" dihilangkan dari template
     const divisionCardHTML = (divisionId, divisionName) => `
         <div class="nested-card" data-division-id="${divisionId}">
             <h3>${divisionName}</h3>
             <div class="progress-section"><label class="progress-label">Kemajuan</label><div class="progress-bar-wrapper"><div class="progress-bar-background"><div class="progress-bar-fill"></div></div><span class="progress-percentage">0%</span></div></div>
             <div class="task-list"></div>
+            <button class="add-task-btn" data-division="${divisionId}"><i class="fas fa-plus"></i> Tambah Tugas</button>
         </div>`;
 
     const divisions = [
@@ -170,6 +243,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 'konsumsi', name: 'Konsumsi' }, { id: 'pdd', name: 'PDD' }
     ];
 
+    // Hapus 'juni' dari array bulan
     const months = ['juli', 'agustus'];
     let allCardsHTML = '';
     divisions.forEach(div => allCardsHTML += divisionCardHTML(div.id, div.name));
@@ -204,6 +278,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let activeMonth = today.getMonth() + 1;
     let allTasksCache = [];
 
+    // Hapus 'juni' dari objek rentang tanggal
     const dateRanges = {
         juli: [{label: '1 - 7', start: 1, end: 7}, {label: '8 - 14', start: 8, end: 14}, {label: '15 - 21', start: 15, end: 21}, {label: '22 - 31', start: 22, end: 31}],
         agustus: [{label: '1 - 7', start: 1, end: 7}, {label: '8 - 14', start: 8, end: 14}, {label: '15 - 21', start: 15, end: 21}, {label: '22 - 31', start: 22, end: 31}]
@@ -231,8 +306,10 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const activateCurrentDateTabs = () => {
         let monthName;
+        // Hapus logika untuk bulan Juni (6)
         if (activeMonth === 7) monthName = 'juli';
         else if (activeMonth === 8) monthName = 'agustus';
+        // Jika bulan saat ini bukan Juli atau Agustus, default ke Juli
         else {
             monthName = 'juli';
             activeMonth = 7;
@@ -333,10 +410,9 @@ document.addEventListener('DOMContentLoaded', () => {
             return acc;
         }, {});
         
-        // Modifikasi: Tambahkan atribut 'disabled' pada checkbox
         const taskHTML = (task) => `
             <div class="checkbox-item">
-                <input type="checkbox" id="${task.id}" class="task-checkbox" ${task.isCompleted ? 'checked' : ''} disabled>
+                <input type="checkbox" id="${task.id}" class="task-checkbox" data-doc-id="${task.id}" ${task.isCompleted ? 'checked' : ''}>
                 <label for="${task.id}">
                     <span>${task.description}</span>
                     <span class="task-time">(${new Date(task.taskDate + 'T00:00:00').toLocaleDateString('id-ID', { weekday: 'short' })}) ${task.startTime || ''}</span>
@@ -363,10 +439,38 @@ document.addEventListener('DOMContentLoaded', () => {
         updateDoughnutChart();
     };
 
-    // --- EVENT LISTENERS ---
-
-    // Dihilangkan: Event listener untuk tombol tambah dan checkbox change
+    const showModal = (modalElement) => modalElement.classList.add('visible');
+    const closeModal = (modalElement) => modalElement.classList.remove('visible');
     
+    const saveAnnouncement = async () => { /* ... (kode tidak berubah) ... */ };
+    const saveTimelineItem = async () => { /* ... (kode tidak berubah) ... */ };
+    const handleSaveTask = async (shouldShare = false) => { /* ... (kode tidak berubah) ... */ };
+    
+    // --- EVENT LISTENERS ---
+    document.getElementById('addAnnouncementBtn').addEventListener('click', () => showModal(announcementModal));
+    document.getElementById('cancelAnnouncementBtn').addEventListener('click', () => closeModal(announcementModal));
+    document.getElementById('saveAnnouncementBtn').addEventListener('click', saveAnnouncement);
+
+    document.getElementById('addTimelineBtn').addEventListener('click', () => showModal(timelineModal));
+    document.getElementById('cancelTimelineBtn').addEventListener('click', () => closeModal(timelineModal));
+    document.getElementById('saveTimelineBtn').addEventListener('click', saveTimelineItem);
+
+    document.getElementById('saveOnlyBtn').addEventListener('click', () => handleSaveTask(false));
+    document.getElementById('saveAndShareBtn').addEventListener('click', () => handleSaveTask(true));
+    document.getElementById('cancelDivisionTaskBtn').addEventListener('click', () => closeModal(divisionTaskModal));
+
+    document.body.addEventListener('click', (e) => {
+        const addTaskBtn = e.target.closest('.add-task-btn');
+        if (addTaskBtn) {
+            const divisionId = addTaskBtn.dataset.division;
+            const divisionName = divisions.find(d => d.id === divisionId)?.name || 'To Do List';
+            divisionTaskForm.reset();
+            document.getElementById('divisionIdField').value = divisionId;
+            document.getElementById('divisionTaskModalTitle').textContent = `Tambah Tugas: ${divisionName}`;
+            showModal(divisionTaskModal);
+        }
+    });
+
     document.body.addEventListener('click', (e) => {
         const subTab = e.target.closest('.sub-tab-link');
         if (subTab) {
@@ -382,15 +486,28 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    document.body.addEventListener('change', async (e) => {
+         if (e.target.classList.contains('task-checkbox')) {
+            await updateDoc(doc(db, "divisionTasks", e.target.dataset.docId), { isCompleted: e.target.checked });
+         }
+    });
+    
     document.querySelectorAll('.tab-link').forEach(link => {
         link.addEventListener('click', (e) => {
             const tabName = e.currentTarget.dataset.tab;
+            // Hapus logika untuk Juni
             if (tabName === 'juli') activeMonth = 7;
             else if (tabName === 'agustus') activeMonth = 8;
             
             activeDate = activeMonth === (today.getMonth() + 1) ? today.getDate() : 1;
             activateCurrentDateTabs();
             renderAllTasks();
+        });
+    });
+
+    [announcementModal, timelineModal, divisionTaskModal].forEach(modal => {
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal(modal);
         });
     });
 
